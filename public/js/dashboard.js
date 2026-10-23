@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetTabId === 'focus-tab' && window.FocusRoomModule) {
         window.FocusRoomModule.refresh();
       }
+
+      // Load Marketplace roadmaps if switching to marketplace-tab
+      if (targetTabId === 'marketplace-tab' && window.MarketplaceModule) {
+        window.MarketplaceModule.load();
+      }
     });
   });
 

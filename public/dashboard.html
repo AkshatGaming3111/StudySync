@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Student Portal - StudySync AI Planner</title>
-  <!-- Favicon -->
+  <!-- Favicon & PWA -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <!-- Google Fonts & CDN Libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +66,10 @@
         <i data-lucide="bar-chart-3" style="width:17px; height:17px;"></i>
         <span>Screen Time</span>
       </li>
+      <li class="nav-item" data-tab="marketplace-tab" id="tab-nav-marketplace">
+        <i data-lucide="compass" style="width:17px; height:17px;"></i>
+        <span>Marketplace</span>
+      </li>
       <li class="nav-item" data-tab="settings-tab" style="display: none;">
         <i data-lucide="user-cog" style="width:17px; height:17px;"></i>
         <span>Settings</span>
@@ -70,6 +78,8 @@
 
     <!-- Clean Gamification Badges & User Profile Menu -->
     <div class="nav-right-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+      <!-- Pro Tier Pill / Upgrade Button Container -->
+      <div id="user-tier-badge-container"></div>
       <!-- Glassmorphic Theme Switcher Dropdown -->
       <div class="theme-dropdown-container">
         <button type="button" class="theme-pill" id="theme-dropdown-btn" title="Switch Glassmorphism Theme">
@@ -595,6 +605,29 @@
           </div>
         </div>
       </div>
+
+      <!-- Multiplayer Co-Working Study Halls -->
+      <div class="glassmorphic-card" style="margin-top: 1.5rem; padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div class="room-icon-box" style="background: rgba(99, 102, 241, 0.2); width: 38px; height: 38px;">
+              <i data-lucide="users" style="color: var(--primary); width: 20px; height: 20px;"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0;">Multiplayer Silent Study Halls</h3>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Co-work silently alongside focused students across the globe in real-time.</span>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="refresh-rooms-btn" onclick="window.RoomsModule && window.RoomsModule.load()">
+            <i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i>
+            <span>Refresh Halls</span>
+          </button>
+        </div>
+        
+        <div class="study-rooms-grid" id="study-rooms-list">
+          <!-- Populated dynamically by rooms.js -->
+        </div>
+      </div>
     </section>
 
     <!-- TAB 3: SCREEN TIME ANALYTICS -->
@@ -719,7 +752,34 @@
       </div>
     </section>
 
-    <!-- TAB 4: ACCOUNT SETTINGS & PROFILE PAGE -->
+    <!-- TAB 4: SYLLABUS & COURSE MARKETPLACE -->
+    <section id="marketplace-tab" class="tab-content">
+      <div class="glassmorphic-card" style="margin-bottom: 1.5rem; padding: 1.5rem 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div class="pricing-badge-pill" style="margin-bottom: 0.5rem;">
+              <i data-lucide="sparkles" style="width: 13px; height: 13px; color: #818cf8;"></i>
+              <span>Community Verified Roadmaps</span>
+            </div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.35rem;">Academic Syllabus Marketplace</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Browse and 1-click clone curated semester roadmaps, coding sprints, and high-yield exam plans.</p>
+          </div>
+          
+          <div class="marketplace-categories-bar">
+            <button class="marketplace-cat-pill active" data-cat="All">All Roadmaps</button>
+            <button class="marketplace-cat-pill" data-cat="University STEM">STEM & Math</button>
+            <button class="marketplace-cat-pill" data-cat="Coding & Tech">Coding & Algorithms</button>
+            <button class="marketplace-cat-pill" data-cat="Medical Exams">Pre-Med & Bio</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="marketplace-cards-grid" id="marketplace-cards-grid">
+        <!-- Populated dynamically by marketplace.js -->
+      </div>
+    </section>
+
+    <!-- TAB 5: ACCOUNT SETTINGS & PROFILE PAGE -->
     <section id="settings-tab" class="tab-content">
       <div class="glass-card" style="padding: 2rem; max-width: 750px; margin: 0 auto;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
@@ -1303,5 +1363,17 @@
   <script src="js/focus.js"></script>
   <script src="js/screentime.js"></script>
   <script src="js/chat.js"></script>
+  <script src="js/billing.js"></script>
+  <script src="js/marketplace.js"></script>
+  <script src="js/rooms.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((err) => {
+          console.warn('PWA ServiceWorker notice:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

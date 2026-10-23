@@ -21,6 +21,9 @@ const plannerRoutes = require('./routes/planner');
 const focusRoutes = require('./routes/focus');
 const screentimeRoutes = require('./routes/screentime');
 const chatRoutes = require('./routes/chat');
+const billingRoutes = require('./routes/billing');
+const marketplaceRoutes = require('./routes/marketplace');
+const roomRoutes = require('./routes/rooms');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -65,6 +68,9 @@ app.use('/api/planner', plannerRoutes);
 app.use('/api/focus', focusRoutes);
 app.use('/api/screentime', screentimeRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/billing', billingRoutes);
+app.use('/api/marketplace', marketplaceRoutes);
+app.use('/api/rooms', roomRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
