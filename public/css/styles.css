@@ -741,38 +741,41 @@ a:hover {
   border-radius: 9999px;
   border: 1px solid var(--glass-border);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  margin: 0;
 }
 
-.nav-item {
-  color: var(--text-muted);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.nav-links li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  position: relative;
 }
 
-.nav-item i {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.2s ease, color 0.2s ease;
+/* General / Landing Page Nav Links (Text Pills) */
+.nav-item {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  border: 1px solid transparent;
+  box-sizing: border-box;
 }
 
 .nav-item:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
   transform: translateY(-1px);
-}
-
-.nav-item:hover i {
-  transform: scale(1.12);
-  color: #ffffff;
 }
 
 .nav-item.active {
@@ -782,9 +785,101 @@ a:hover {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-.nav-item.active i {
+/* Dashboard Icon Dock Nav Items (Logos Only) */
+.nav-item[data-tab],
+.dashboard-nav-links .nav-item {
+  width: 40px;
+  height: 40px;
+  padding: 0 !important;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item[data-tab] i,
+.nav-item[data-tab] svg,
+.dashboard-nav-links .nav-item i,
+.dashboard-nav-links .nav-item svg {
+  width: 19px !important;
+  height: 19px !important;
+  stroke-width: 2.1;
+  transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
+  pointer-events: none;
+}
+
+.nav-item[data-tab]:hover,
+.dashboard-nav-links .nav-item:hover {
   color: #ffffff;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.nav-item[data-tab]:hover i,
+.nav-item[data-tab]:hover svg,
+.dashboard-nav-links .nav-item:hover i,
+.dashboard-nav-links .nav-item:hover svg {
+  transform: scale(1.15);
+  color: #ffffff;
+}
+
+.nav-item[data-tab].active,
+.dashboard-nav-links .nav-item.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: none;
+}
+
+.nav-item[data-tab].active i,
+.nav-item[data-tab].active svg,
+.dashboard-nav-links .nav-item.active i,
+.dashboard-nav-links .nav-item.active svg {
+  color: #ffffff;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+}
+
+/* Micro Tooltips on Hover for Icon Dock (Desktop & Tablet) */
+@media (min-width: 769px) {
+  .nav-item[data-tab][data-tooltip]::after,
+  .dashboard-nav-links .nav-item[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #f8fafc;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    z-index: 1100;
+  }
+
+  .nav-item[data-tab][data-tooltip]:hover::after,
+  .dashboard-nav-links .nav-item[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Organized Gamification Status Capsule */
@@ -3910,15 +4005,29 @@ html, body {
     display: none !important;
   }
   .user-profile-badge .user-name-text,
-  .user-profile-badge i {
+  .user-profile-badge i,
+  .user-profile-badge svg {
     display: none !important;
   }
   .user-profile-badge {
     padding: 0.2rem !important;
   }
-  .nav-item {
-    padding: 0.35rem 0.65rem !important;
-    font-size: 0.8rem !important;
+  .nav-item:not([data-tab]) {
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.82rem !important;
+  }
+  .nav-item[data-tab],
+  .dashboard-nav-links .nav-item {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+  }
+  .nav-item[data-tab] i,
+  .nav-item[data-tab] svg,
+  .dashboard-nav-links .nav-item i,
+  .dashboard-nav-links .nav-item svg {
+    width: 17px !important;
+    height: 17px !important;
   }
   .nav-right-actions {
     gap: 0.45rem !important;
@@ -3982,7 +4091,8 @@ html, body {
     height: 32px !important;
   }
 
-  .theme-icon-btn i {
+  .theme-icon-btn i,
+  .theme-icon-btn svg {
     width: 14px !important;
     height: 14px !important;
   }
@@ -4002,7 +4112,8 @@ html, body {
     height: 32px !important;
   }
   .user-profile-badge .user-name-text,
-  .user-profile-badge i {
+  .user-profile-badge i,
+  .user-profile-badge svg {
     display: none !important;
   }
   .user-avatar-circle {
@@ -4012,11 +4123,13 @@ html, body {
   }
 
   /* Landing Page (index.html) Nav Links */
+  .landing-nav-links,
   .navbar .nav-links:not(:has([data-tab])) {
     display: none !important;
   }
 
   /* Dashboard: Native-App Mobile Bottom Navigation Bar */
+  .dashboard-nav-links,
   .navbar .nav-links:has([data-tab]) {
     position: fixed !important;
     bottom: 0 !important;
@@ -4040,6 +4153,7 @@ html, body {
     box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5) !important;
   }
 
+  .dashboard-nav-links .nav-item,
   .navbar .nav-links:has([data-tab]) .nav-item {
     flex: 1 !important;
     display: flex !important;
@@ -4054,15 +4168,21 @@ html, body {
     border: none !important;
     color: var(--text-muted) !important;
     position: relative !important;
+    width: auto !important;
+    height: auto !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  .navbar .nav-links:has([data-tab]) .nav-item i {
-    width: 20px !important;
-    height: 20px !important;
+  .dashboard-nav-links .nav-item i,
+  .dashboard-nav-links .nav-item svg,
+  .navbar .nav-links:has([data-tab]) .nav-item i,
+  .navbar .nav-links:has([data-tab]) .nav-item svg {
+    width: 22px !important;
+    height: 22px !important;
     transition: transform 0.2s ease !important;
   }
 
+  .dashboard-nav-links .nav-item.active,
   .navbar .nav-links:has([data-tab]) .nav-item.active {
     color: #ffffff !important;
     background: rgba(99, 102, 241, 0.18) !important;
@@ -4070,6 +4190,7 @@ html, body {
     border: 1px solid rgba(99, 102, 241, 0.35) !important;
   }
 
+  .dashboard-nav-links .nav-item.active::before,
   .navbar .nav-links:has([data-tab]) .nav-item.active::before {
     content: '' !important;
     position: absolute !important;
@@ -4083,6 +4204,7 @@ html, body {
     box-shadow: 0 0 10px var(--primary) !important;
   }
 
+  .dashboard-nav-links .nav-item:active,
   .navbar .nav-links:has([data-tab]) .nav-item:active {
     transform: scale(0.94) !important;
   }
