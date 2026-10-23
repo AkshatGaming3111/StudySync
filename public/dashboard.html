@@ -52,43 +52,59 @@
       <span>StudySync</span>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs (Desktop Capsule / Mobile Bottom Bar) -->
     <ul class="nav-links">
       <li class="nav-item active" data-tab="planner-tab">
-        <i data-lucide="calendar" style="width:17px; height:17px;"></i>
+        <i data-lucide="calendar" style="width:16px; height:16px;"></i>
         <span>AI Planner</span>
       </li>
       <li class="nav-item" data-tab="focus-tab">
-        <i data-lucide="headphones" style="width:17px; height:17px;"></i>
+        <i data-lucide="headphones" style="width:16px; height:16px;"></i>
         <span>Focus Room</span>
       </li>
       <li class="nav-item" data-tab="screentime-tab">
-        <i data-lucide="bar-chart-3" style="width:17px; height:17px;"></i>
+        <i data-lucide="bar-chart-3" style="width:16px; height:16px;"></i>
         <span>Screen Time</span>
       </li>
       <li class="nav-item" data-tab="marketplace-tab" id="tab-nav-marketplace">
-        <i data-lucide="compass" style="width:17px; height:17px;"></i>
+        <i data-lucide="compass" style="width:16px; height:16px;"></i>
         <span>Marketplace</span>
       </li>
       <li class="nav-item" data-tab="settings-tab" style="display: none;">
-        <i data-lucide="user-cog" style="width:17px; height:17px;"></i>
+        <i data-lucide="user-cog" style="width:16px; height:16px;"></i>
         <span>Settings</span>
       </li>
     </ul>
 
     <!-- Clean Gamification Badges & User Profile Menu -->
-    <div class="nav-right-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+    <div class="nav-right-actions">
       <!-- Pro Tier Pill / Upgrade Button Container -->
-      <div id="user-tier-badge-container"></div>
-      <!-- Glassmorphic Theme Switcher Dropdown -->
+      <div id="user-tier-badge-container" class="nav-slot-tier"></div>
+
+      <!-- Unified Academic Stats Capsule (Streak + Level + Rank) -->
+      <div class="nav-stats-capsule" title="Academic Streak & Student Mastery Rank">
+        <div class="capsule-segment streak-segment" title="Daily Study Streak">
+          <i data-lucide="flame" class="stat-icon-flame" style="width:15px; height:15px; color:#f59e0b;"></i>
+          <strong id="header-streak-count">0</strong>
+          <span class="capsule-unit">d</span>
+        </div>
+        <span class="capsule-divider"></span>
+        <div class="capsule-segment level-segment" title="Student Level & Mastery Rank">
+          <span class="capsule-muted">Lvl</span>
+          <strong id="header-user-level" style="color:#fff;">1</strong>
+          <span id="header-student-title-badge" class="badge-title-pill">Backbencher 🛋️</span>
+        </div>
+      </div>
+
+      <!-- Icon-Only Theme Switcher Button -->
       <div class="theme-dropdown-container">
-        <button type="button" class="theme-pill" id="theme-dropdown-btn" title="Switch Glassmorphism Theme">
-          <i data-lucide="palette" style="width:15px; height:15px; color: var(--primary);"></i>
-          <span id="current-theme-label">Modern Indigo</span>
-          <i data-lucide="chevron-down" style="width:12px; height:12px; opacity:0.6;"></i>
+        <button type="button" class="theme-icon-btn" id="theme-dropdown-btn" title="Switch Theme Skin">
+          <i data-lucide="palette" style="width:16px; height:16px;"></i>
+          <span id="current-theme-label" style="display: none;">Modern Indigo</span>
         </button>
 
         <div class="theme-dropdown-menu" id="theme-dropdown-menu">
+          <div class="dropdown-header-label">Theme Aesthetics</div>
           <div class="theme-option-item active" data-theme="default">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #6366f1, #a855f7);"></span>
             <span>Modern Indigo</span>
@@ -112,26 +128,12 @@
         </div>
       </div>
 
-      <!-- Streak Pill -->
-      <div class="streak-pill" title="Current Daily Streak">
-        <i data-lucide="flame" style="width:16px; height:16px; color:#f59e0b;"></i>
-        <strong id="header-streak-count">0</strong>
-        <span style="font-size: 0.75rem; color: var(--text-muted);">Days</span>
-      </div>
-
-      <!-- Level Pill -->
-      <div class="level-pill" title="Student Rank & Level">
-        <span style="font-size: 0.75rem; color: var(--text-muted);">Lvl</span>
-        <strong id="header-user-level" style="color:#fff;">1</strong>
-        <span id="header-student-title-badge" class="badge-title-pill">Backbencher 🛋️</span>
-      </div>
-
       <!-- Profile Dropdown Trigger -->
       <div class="profile-dropdown-container">
         <div class="user-profile-badge" id="user-profile-toggle" title="User Profile Menu">
           <div class="user-avatar-circle" id="user-avatar-initials">U</div>
           <span id="user-name-display" class="user-name-text">Student</span>
-          <i data-lucide="chevron-down" style="width:14px; height:14px; opacity:0.6; margin-left: 0.1rem;"></i>
+          <i data-lucide="chevron-down" style="width:13px; height:13px; opacity:0.6;"></i>
         </div>
 
         <!-- Floating Glass Profile Menu -->
