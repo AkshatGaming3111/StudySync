@@ -76,25 +76,48 @@
       <!-- Pro Tier Pill / Upgrade Button Container -->
       <div id="user-tier-badge-container" class="nav-slot-tier"></div>
 
-      <!-- Unified Academic Stats Capsule (Streak + Level + Rank) -->
-      <div class="nav-stats-capsule" title="Academic Streak & Student Mastery Rank">
-        <div class="capsule-segment streak-segment" title="Daily Study Streak">
-          <i data-lucide="flame" class="stat-icon-flame" style="width:15px; height:15px; color:#f59e0b;"></i>
-          <strong id="header-streak-count">0</strong>
-          <span class="capsule-unit">d</span>
+      <!-- Unified Academic Stats Capsule (Streak + Level + Rank) with Dropdown -->
+      <div class="level-dropdown-container">
+        <div class="nav-stats-capsule" id="level-stats-toggle" title="Click to view Academic Level & XP Progress">
+          <div class="capsule-segment streak-segment" title="Daily Study Streak">
+            <i data-lucide="flame" class="stat-icon-flame"></i>
+            <strong id="header-streak-count">0</strong>
+            <span class="capsule-unit">d</span>
+          </div>
+          <span class="capsule-divider"></span>
+          <div class="capsule-segment level-segment" title="Student Level & Mastery Rank">
+            <i data-lucide="zap" class="stat-icon-zap"></i>
+            <span class="capsule-muted">Lvl</span>
+            <strong id="header-user-level">1</strong>
+            <span id="header-student-title-badge" class="badge-title-pill">Backbencher</span>
+          </div>
         </div>
-        <span class="capsule-divider"></span>
-        <div class="capsule-segment level-segment" title="Student Level & Mastery Rank">
-          <span class="capsule-muted">Lvl</span>
-          <strong id="header-user-level" style="color:#fff;">1</strong>
-          <span id="header-student-title-badge" class="badge-title-pill">Backbencher 🛋️</span>
+
+        <!-- Floating Glass Level & XP Card -->
+        <div class="level-dropdown-menu glass-card" id="level-dropdown-menu">
+          <div class="level-dropdown-header">
+            <div class="level-badge-large">
+              <i data-lucide="award" style="width:20px; height:20px; color:#a855f7;"></i>
+            </div>
+            <div class="level-header-text">
+              <div class="level-title-large">Level <span id="popup-user-level">1</span>: <span id="popup-student-title">Backbencher</span></div>
+              <div class="level-xp-text" id="popup-xp-text">0 / 100 XP to next level</div>
+            </div>
+          </div>
+          <div class="level-bar-container">
+            <div class="level-progress-fill" id="popup-xp-progress" style="width: 0%;"></div>
+          </div>
+          <div class="level-streak-footer">
+            <i data-lucide="flame" style="width:14px; height:14px; color:#f59e0b;"></i>
+            <span>Daily Streak: <strong id="popup-streak-count">0</strong> days</span>
+          </div>
         </div>
       </div>
 
       <!-- Icon-Only Theme Switcher Button -->
       <div class="theme-dropdown-container">
-        <button type="button" class="theme-icon-btn" id="theme-dropdown-btn" title="Switch Theme Skin">
-          <i data-lucide="palette" style="width:16px; height:16px;"></i>
+        <button type="button" class="theme-icon-btn" id="theme-dropdown-btn" data-tooltip="Theme" title="Switch Theme Skin">
+          <i data-lucide="palette"></i>
           <span id="current-theme-label" style="display: none;">Modern Indigo</span>
         </button>
 
@@ -103,22 +126,27 @@
           <div class="theme-option-item active" data-theme="default">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #6366f1, #a855f7);"></span>
             <span>Modern Indigo</span>
+            <i data-lucide="check" class="theme-check-icon"></i>
           </div>
           <div class="theme-option-item" data-theme="cyberpunk">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #00f0ff, #ff007f);"></span>
             <span>Cyberpunk Neon</span>
+            <i data-lucide="check" class="theme-check-icon"></i>
           </div>
           <div class="theme-option-item" data-theme="cozy-cafe">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #f59e0b, #78350f);"></span>
             <span>Cozy Coffee Shop</span>
+            <i data-lucide="check" class="theme-check-icon"></i>
           </div>
           <div class="theme-option-item" data-theme="midnight-oled">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #000000, #10b981);"></span>
             <span>Midnight OLED</span>
+            <i data-lucide="check" class="theme-check-icon"></i>
           </div>
           <div class="theme-option-item" data-theme="studio-ghibli">
             <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #10b981, #f472b6);"></span>
             <span>Studio Ghibli</span>
+            <i data-lucide="check" class="theme-check-icon"></i>
           </div>
         </div>
       </div>
@@ -128,18 +156,17 @@
         <div class="user-profile-badge" id="user-profile-toggle" title="User Profile Menu">
           <div class="user-avatar-circle" id="user-avatar-initials">U</div>
           <span id="user-name-display" class="user-name-text">Student</span>
-          <i data-lucide="chevron-down" style="width:13px; height:13px; opacity:0.6;"></i>
+          <i data-lucide="chevron-down" class="profile-chevron"></i>
         </div>
 
         <!-- Floating Glass Profile Menu -->
         <div class="profile-dropdown-menu glass-card" id="profile-dropdown-menu">
-          <div class="dropdown-header">
-            <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">XP Progress</div>
-            <div class="dropdown-xp-display" id="header-user-xp">0 / 100 XP</div>
-          </div>
-
-          <div class="level-bar" style="margin: 0.4rem 0 0.8rem 0;">
-            <div class="level-progress" id="header-xp-progress"></div>
+          <div class="profile-menu-header">
+            <div class="user-avatar-circle large" id="profile-menu-avatar">U</div>
+            <div class="profile-menu-info">
+              <div class="profile-menu-name" id="profile-menu-name">Student</div>
+              <div class="profile-menu-role" id="profile-menu-role">Student Learner</div>
+            </div>
           </div>
 
           <div class="dropdown-divider"></div>
@@ -148,6 +175,13 @@
             <i data-lucide="settings" style="width:16px; height:16px; color: var(--primary);"></i>
             <span>Account Settings</span>
           </div>
+
+          <div class="dropdown-item" id="profile-upgrade-btn">
+            <i data-lucide="sparkles" style="width:16px; height:16px; color: #818cf8;"></i>
+            <span>StudySync Pro Pass</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
 
           <div class="dropdown-item danger" id="logout-btn">
             <i data-lucide="log-out" style="width:16px; height:16px;"></i>

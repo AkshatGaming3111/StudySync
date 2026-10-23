@@ -43,13 +43,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
-  // THEME MANAGEMENT (Glassmorphism Skins)
+  // NAVBAR CONTROLS: LEVEL, THEME & ACCOUNT
   // ==========================================
+  const levelToggle = document.getElementById('level-stats-toggle');
+  const levelMenu = document.getElementById('level-dropdown-menu');
   const themeBtn = document.getElementById('theme-dropdown-btn');
   const themeMenu = document.getElementById('theme-dropdown-menu');
   const currentThemeLabel = document.getElementById('current-theme-label');
   const themeOptions = document.querySelectorAll('.theme-option-item');
+  const profileToggle = document.getElementById('user-profile-toggle');
+  const profileMenu = document.getElementById('profile-dropdown-menu');
+  const profileUpgradeBtn = document.getElementById('profile-upgrade-btn');
 
+  function closeAllNavDropdowns() {
+    if (levelMenu) levelMenu.classList.remove('active');
+    if (levelToggle) levelToggle.classList.remove('active');
+    if (themeMenu) themeMenu.classList.remove('active');
+    if (themeBtn) themeBtn.classList.remove('active');
+    if (profileMenu) profileMenu.classList.remove('active');
+    if (profileToggle) profileToggle.classList.remove('active');
+  }
+
+  // 1. Level & Academic Stats Dropdown
+  if (levelToggle && levelMenu) {
+    levelToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = levelMenu.classList.contains('active');
+      closeAllNavDropdowns();
+      if (!isOpen) {
+        levelMenu.classList.add('active');
+        levelToggle.classList.add('active');
+      }
+    });
+  }
+
+  // 2. Theme Dropdown
   const THEME_NAMES = {
     'default': 'Modern Indigo',
     'cyberpunk': 'Cyberpunk Neon',
@@ -83,41 +111,56 @@ document.addEventListener('DOMContentLoaded', () => {
   if (themeBtn && themeMenu) {
     themeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      themeMenu.classList.toggle('active');
-      if (profileMenu) profileMenu.classList.remove('active');
+      const isOpen = themeMenu.classList.contains('active');
+      closeAllNavDropdowns();
+      if (!isOpen) {
+        themeMenu.classList.add('active');
+        themeBtn.classList.add('active');
+      }
     });
 
     themeOptions.forEach(opt => {
       opt.addEventListener('click', () => {
         const selected = opt.getAttribute('data-theme');
         applyTheme(selected);
-        themeMenu.classList.remove('active');
+        closeAllNavDropdowns();
       });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!themeMenu.contains(e.target) && !themeBtn.contains(e.target)) {
-        themeMenu.classList.remove('active');
-      }
     });
   }
 
-  // Profile Dropdown Menu Handlers
-  const profileToggle = document.getElementById('user-profile-toggle');
-  const profileMenu = document.getElementById('profile-dropdown-menu');
-
+  // 3. Profile Dropdown
   if (profileToggle && profileMenu) {
     profileToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      profileMenu.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!profileMenu.contains(e.target) && !profileToggle.contains(e.target)) {
-        profileMenu.classList.remove('active');
+      const isOpen = profileMenu.classList.contains('active');
+      closeAllNavDropdowns();
+      if (!isOpen) {
+        profileMenu.classList.add('active');
+        profileToggle.classList.add('active');
       }
     });
   }
+
+  // Pro Upgrade Button in Profile Dropdown
+  if (profileUpgradeBtn) {
+    profileUpgradeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllNavDropdowns();
+      if (window.BillingModule && typeof window.BillingModule.openModal === 'function') {
+        window.BillingModule.openModal();
+      }
+    });
+  }
+
+  // Close when clicking outside any navbar dropdown
+  document.addEventListener('click', (e) => {
+    const inLevel = levelToggle && levelToggle.contains(e.target) || levelMenu && levelMenu.contains(e.target);
+    const inTheme = themeBtn && themeBtn.contains(e.target) || themeMenu && themeMenu.contains(e.target);
+    const inProfile = profileToggle && profileToggle.contains(e.target) || profileMenu && profileMenu.contains(e.target);
+    if (!inLevel && !inTheme && !inProfile) {
+      closeAllNavDropdowns();
+    }
+  });
 
   // Logout Handler
   const logoutBtn = document.getElementById('logout-btn');
@@ -390,35 +433,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const xpDisplay = document.getElementById('header-user-xp');
     const xpProgress = document.getElementById('header-xp-progress');
 
-    if (nameDisplay) nameDisplay.innerText = user.name || 'Student';
-    if (avatarInitials) {
-      const parts = (user.name || 'Student').trim().split(' ');
-      const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0][0].toUpperCase();
-      avatarInitials.innerText = initials;
+    // Floating Popup Elements
+    const popupLevel = document.getElementById('popup-user-level');
+    const popupTitle = document.getElementById('popup-student-title');
+    const popupXpText = document.getElementById('popup-xp-text');
+    const popupXpProgress = document.getElementById('popup-xp-progress');
+    const popupStreak = document.getElementById('popup-streak-count');
+    const profileMenuAvatar = document.getElementById('profile-menu-avatar');
+    const profileMenuName = document.getElementById('profile-menu-name');
+    const profileMenuRole = document.getElementById('profile-menu-role');
+
+    const userName = user.name || 'Student';
+    if (nameDisplay) nameDisplay.innerText = userName;
+    if (profileMenuName) profileMenuName.innerText = userName;
+
+    let initials = 'U';
+    if (user.name) {
+      const parts = user.name.trim().split(' ');
+      initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0][0].toUpperCase();
+    }
+    if (avatarInitials) avatarInitials.innerText = initials;
+    if (profileMenuAvatar) profileMenuAvatar.innerText = initials;
+
+    if (profileMenuRole) {
+      if (user.isPro || (window.BillingModule && window.BillingModule.isPro)) {
+        profileMenuRole.innerText = 'Pro Scholar 👑';
+      } else {
+        profileMenuRole.innerText = user.email || 'Free Student Explorer';
+      }
     }
 
     const g = user.gamification || calculateStudentProgress(user.xp || 0);
 
+    const currentStreak = user.streak !== undefined ? user.streak : 0;
     if (streakCount) {
-      const currentStreak = user.streak !== undefined ? user.streak : 0;
       streakCount.innerText = currentStreak;
-      const pill = streakCount.closest('.streak-pill');
+      const pill = streakCount.closest('.nav-stats-capsule') || streakCount.closest('.streak-pill');
       if (pill) {
         if (currentStreak > 0) pill.classList.add('streak-active');
         else pill.classList.remove('streak-active');
       }
     }
+    if (popupStreak) popupStreak.innerText = currentStreak;
+
     if (levelDisplay) levelDisplay.innerText = g.level;
+    if (popupLevel) popupLevel.innerText = g.level;
     
     if (titleBadge) {
-      titleBadge.innerText = g.title;
+      titleBadge.innerText = g.title.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim() || g.title;
       titleBadge.style.backgroundColor = `${g.badgeColor}25`;
       titleBadge.style.color = g.badgeColor;
       titleBadge.style.borderColor = `${g.badgeColor}50`;
     }
+    if (popupTitle) popupTitle.innerText = g.title;
 
     if (xpDisplay) xpDisplay.innerText = `${g.currentLevelXP} / ${g.nextLevelXP} XP`;
     if (xpProgress) xpProgress.style.width = `${g.progressPercent}%`;
+
+    if (popupXpText) popupXpText.innerText = `${g.currentLevelXP} / ${g.nextLevelXP} XP to Level ${g.level + 1}`;
+    if (popupXpProgress) popupXpProgress.style.width = `${g.progressPercent}%`;
   }
 
   window.calculateStudentProgress = calculateStudentProgress;
