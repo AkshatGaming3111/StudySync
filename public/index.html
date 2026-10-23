@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>StudySync - AI Smart Study Planner</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Dynamic Multi-Layer Sliding Background -->
+  <div class="bg-scene-container" aria-hidden="true">
+    <div class="bg-sliding-grid"></div>
+    <div class="bg-sliding-aurora">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+    <div class="bg-sliding-beams">
+      <div class="light-beam light-beam-1"></div>
+      <div class="light-beam light-beam-2"></div>
+      <div class="light-beam light-beam-3"></div>
+    </div>
+    <div class="bg-floating-shapes">
+      <div class="float-shape shape-square-1"></div>
+      <div class="float-shape shape-square-2"></div>
+      <div class="float-shape shape-circle-1"></div>
+      <div class="float-shape shape-ring-1"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <img src="favicon.svg" alt="StudySync AI Logo" class="brand-logo-img">
+      </div>
+      <span>StudySync AI</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#features" class="nav-item">Features</a></li>
+      <li><a href="#how-it-works" class="nav-item">How It Works</a></li>
+      <li><a href="#faq" class="nav-item">FAQ</a></li>
+    </ul>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <a href="auth.html" class="btn btn-glass btn-sm" id="nav-login-btn">Sign In</a>
+      <a href="auth.html?mode=register" class="btn btn-primary btn-sm" id="nav-start-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-tag">
+      <span class="live-dot-pulse"></span>
+      <i data-lucide="sparkles" style="width:15px; height:15px; color: var(--primary);"></i>
+      <span>Next-Gen Academic Mastery Engine • Gemini AI</span>
+    </div>
+    
+    <h1 class="hero-title">Master Your Syllabus with <span class="gradient-text">AI Precision</span> & Distraction-Free Focus</h1>
+    
+    <p class="hero-desc">
+      Transform overwhelming exam syllabi into structured, daily micro-schedules. Track screen-time limits, unlock deep focus with ambient soundscapes, and build unstoppable streak momentum.
+    </p>
+
+    <div class="hero-actions">
+      <a href="auth.html?mode=register" class="btn btn-primary" style="padding: 0.85rem 1.85rem; font-size: 1rem;">
+        <i data-lucide="rocket"></i>
+        <span>Start Free Today</span>
+      </a>
+      <a href="dashboard.html" class="btn btn-glass" id="hero-demo-btn" style="padding: 0.85rem 1.65rem; font-size: 1rem;">
+        <i data-lucide="play-circle"></i>
+        <span>Explore Student Portal</span>
+      </a>
+    </div>
+
+    <!-- Hero Workstation Mockup Card -->
+    <div class="hero-mockup-wrapper">
+      <div class="hero-mockup-glow"></div>
+
+      <!-- Floating Satellites -->
+      <div class="floating-satellite satellite-left">
+        <span style="font-size: 1.1rem;">🔥</span>
+        <div>
+          <div style="font-size: 0.72rem; color: #fbbf24; text-transform: uppercase; font-weight: 800;">Streak Unlocked</div>
+          <div style="font-size: 0.82rem; font-weight: 700;">14-Day Streak (+250 XP)</div>
+        </div>
+      </div>
+
+      <div class="floating-satellite satellite-right">
+        <i data-lucide="sparkles" style="width:18px; height:18px; color: #a78bfa;"></i>
+        <div>
+          <div style="font-size: 0.72rem; color: #c4b5fd; text-transform: uppercase; font-weight: 800;">Gemini Engine</div>
+          <div style="font-size: 0.82rem; font-weight: 700;">Calculus & Physics Optimized</div>
+        </div>
+      </div>
+
+      <!-- Workstation Chrome Card -->
+      <div class="hero-mockup-card">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <span class="mockup-dot red"></span>
+            <span class="mockup-dot yellow"></span>
+            <span class="mockup-dot green"></span>
+          </div>
+          <div class="mockup-title-bar">
+            <i data-lucide="lock" style="width:12px; height:12px; color: var(--text-dim);"></i>
+            <span>app.studysync.ai/workspace</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.76rem; color: #6ee7b7;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <span>Live Sync</span>
+          </div>
+        </div>
+
+        <div class="mockup-body">
+          <!-- Widget 1: Focus Room Preview -->
+          <div class="mockup-widget">
+            <div class="mockup-widget-header">
+              <span class="mockup-widget-title">
+                <i data-lucide="headphones" style="width:14px; height:14px; color: var(--accent);"></i>
+                Focus Interval
+              </span>
+              <span class="badge badge-low" style="font-size: 0.65rem;">Active</span>
+            </div>
+            
+            <div style="text-align: center; margin: 0.5rem 0;">
+              <div style="font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: #fff;">
+                24:58
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Pomodoro Deep Work</div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.25); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+              <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;">
+                <i data-lucide="volume-2" style="width:13px; height:13px; color: var(--accent);"></i>
+                <span>Rain & 40Hz Gamma</span>
+              </div>
+              <div class="eq-bars">
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 2: AI Study Tasks Queue -->
+          <div class="mockup-widget">
+            <div class="mockup-widget-header">
+              <span class="mockup-widget-title">
+                <i data-lucide="calendar" style="width:14px; height:14px; color: var(--primary);"></i>
+                Today's Micro-Schedule
+              </span>
+              <span class="badge badge-ai" style="font-size: 0.65rem;">AI Synced</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.45rem 0.65rem;">
+                <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; text-decoration: line-through; color: var(--text-muted);">
+                  <i data-lucide="check-circle" style="width:14px; height:14px; color: #10b981;"></i>
+                  <span>Calculus: Multiple Integrals</span>
+                </div>
+                <span style="font-size: 0.7rem; color: #6ee7b7; font-weight: 600;">Done</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.35); border-radius: 8px; padding: 0.45rem 0.65rem;">
+                <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; font-weight: 600; color: #fff;">
+                  <i data-lucide="circle" style="width:14px; height:14px; color: var(--primary);"></i>
+                  <span>Organic Chem: Mechanisms</span>
+                </div>
+                <span class="badge badge-high" style="font-size: 0.65rem;">Priority</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 0.45rem 0.65rem;">
+                <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: var(--text-muted);">
+                  <i data-lucide="clock" style="width:14px; height:14px; color: var(--text-dim);"></i>
+                  <span>Physics: Gauss's Law Review</span>
+                </div>
+                <span style="font-size: 0.7rem; color: var(--text-dim);">4:00 PM</span>
+              </div>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 0.4rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+                <span>Syllabus Target</span>
+                <span style="color: #6ee7b7; font-weight: 700;">76% Covered</span>
+              </div>
+              <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
+                <div style="width: 76%; height: 100%; background: linear-gradient(90deg, var(--primary), #10b981); border-radius: 999px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 3: Screen Time & Distraction Telemetry -->
+          <div class="mockup-widget">
+            <div class="mockup-widget-header">
+              <span class="mockup-widget-title">
+                <i data-lucide="shield" style="width:14px; height:14px; color: var(--success);"></i>
+                Digital Telemetry
+              </span>
+              <span class="badge badge-low" style="font-size: 0.65rem;">In Bounds</span>
+            </div>
+
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: #fff;">4.2h</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">Study / 38m Off-Task</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                <span>leetcode.com</span>
+                <span style="color: #6ee7b7; font-weight: 600;">1h 45m (Study)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                <span>coursera.org</span>
+                <span style="color: #6ee7b7; font-weight: 600;">1h 10m (Study)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                <span>youtube.com</span>
+                <span style="color: #fca5a5; font-weight: 600;">22m (Monitored)</span>
+              </div>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.45rem 0.6rem; text-align: center; margin-top: auto;">
+              <span style="font-size: 0.75rem; color: #6ee7b7; font-weight: 700;">🎯 94% Daily Focus Score</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Infinite University / College Social Proof Marquee -->
+  <section class="marquee-container" aria-label="Universities using StudySync">
+    <div class="marquee-heading">Trusted by high-achieving students from world-renowned institutions</div>
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span class="university-pill"><i data-lucide="graduation-cap" style="width:15px; height:15px;"></i> Harvard University</span>
+        <span class="university-pill"><i data-lucide="cpu" style="width:15px; height:15px;"></i> MIT</span>
+        <span class="university-pill"><i data-lucide="trees" style="width:15px; height:15px;"></i> Stanford University</span>
+        <span class="university-pill"><i data-lucide="book-open" style="width:15px; height:15px;"></i> University of Oxford</span>
+        <span class="university-pill"><i data-lucide="landmark" style="width:15px; height:15px;"></i> University of Cambridge</span>
+        <span class="university-pill"><i data-lucide="atom" style="width:15px; height:15px;"></i> UC Berkeley</span>
+        <span class="university-pill"><i data-lucide="flask-conical" style="width:15px; height:15px;"></i> Imperial College London</span>
+        <span class="university-pill"><i data-lucide="globe" style="width:15px; height:15px;"></i> National University of Singapore</span>
+        <span class="university-pill"><i data-lucide="award" style="width:15px; height:15px;"></i> IIT Delhi & Bombay</span>
+        <span class="university-pill"><i data-lucide="compass" style="width:15px; height:15px;"></i> University of Toronto</span>
+        <span class="university-pill"><i data-lucide="zap" style="width:15px; height:15px;"></i> ETH Zürich</span>
+      </div>
+      <!-- Cloned duplicate for seamless infinite marquee loop -->
+      <div class="marquee-content" aria-hidden="true">
+        <span class="university-pill"><i data-lucide="graduation-cap" style="width:15px; height:15px;"></i> Harvard University</span>
+        <span class="university-pill"><i data-lucide="cpu" style="width:15px; height:15px;"></i> MIT</span>
+        <span class="university-pill"><i data-lucide="trees" style="width:15px; height:15px;"></i> Stanford University</span>
+        <span class="university-pill"><i data-lucide="book-open" style="width:15px; height:15px;"></i> University of Oxford</span>
+        <span class="university-pill"><i data-lucide="landmark" style="width:15px; height:15px;"></i> University of Cambridge</span>
+        <span class="university-pill"><i data-lucide="atom" style="width:15px; height:15px;"></i> UC Berkeley</span>
+        <span class="university-pill"><i data-lucide="flask-conical" style="width:15px; height:15px;"></i> Imperial College London</span>
+        <span class="university-pill"><i data-lucide="globe" style="width:15px; height:15px;"></i> National University of Singapore</span>
+        <span class="university-pill"><i data-lucide="award" style="width:15px; height:15px;"></i> IIT Delhi & Bombay</span>
+        <span class="university-pill"><i data-lucide="compass" style="width:15px; height:15px;"></i> University of Toronto</span>
+        <span class="university-pill"><i data-lucide="zap" style="width:15px; height:15px;"></i> ETH Zürich</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    
+    <!-- Modern Bento Grid Feature Architecture -->
+    <section id="features" class="bento-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <i data-lucide="sparkles" style="width:14px; height:14px;"></i>
+          <span>Engineered for Academic Excellence</span>
+        </div>
+        <h2>Everything You Need to Ace Every Single Exam</h2>
+        <p>Empowered by Gemini AI, Web Audio digital sound synthesis, and real-time behavioral insights.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Card 1: Large Bento (7 columns) - AI Syllabus Breakdown -->
+        <div class="bento-card bento-card-large">
+          <div class="bento-glow-overlay"></div>
+          <div>
+            <div class="bento-icon">
+              <i data-lucide="cpu"></i>
+            </div>
+            <div class="bento-content">
+              <div class="badge badge-ai" style="margin-bottom: 0.6rem;">Gemini AI Core</div>
+              <h3>AI Syllabus Breakdown & Dynamic Auto-Rescheduling</h3>
+              <p>
+                Paste your course syllabus or lecture notes. Gemini AI analyzes cognitive difficulty, decomposes weeks of coursework into daily micro-tasks, and seamlessly redistributes overdue topics into upcoming study windows.
+              </p>
+            </div>
+          </div>
+
+          <div class="bento-preview-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Automated Topic Decomposition</span>
+              <span class="badge badge-low" style="font-size: 0.68rem;">Zero Syllabus Debt</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; font-size: 0.78rem;">
+              <div style="background: rgba(255,255,255,0.04); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+                <div style="color: var(--text-dim); font-size: 0.7rem;">Target Date</div>
+                <div style="font-weight: 700; color: #fff;">Finals: 24 Days</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.04); padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+                <div style="color: var(--text-dim); font-size: 0.7rem;">Daily Workload</div>
+                <div style="font-weight: 700; color: var(--accent);">3.5 Hours / Day</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Medium Bento (5 columns) - Distraction-Free Focus Room -->
+        <div class="bento-card bento-card-medium">
+          <div class="bento-glow-overlay" style="background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);"></div>
+          <div>
+            <div class="bento-icon" style="color: var(--accent); background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3);">
+              <i data-lucide="headphones"></i>
+            </div>
+            <div class="bento-content">
+              <div class="badge badge-medium" style="margin-bottom: 0.6rem;">Web Audio Synthesizer</div>
+              <h3>Distraction-Free Audio Focus Room</h3>
+              <p>
+                Synthesize real-time ambient soundscapes—Gentle Rain, White Noise, and 40Hz Binaural Beats. Includes full-screen lockdown and tab-switch penalty tracking.
+              </p>
+            </div>
+          </div>
+
+          <div class="bento-preview-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
+              <span style="color: var(--text-muted);"><i data-lucide="lock" style="width:13px; height:13px; vertical-align: middle;"></i> Tab Blocker</span>
+              <span style="color: #6ee7b7; font-weight: 700;">Shield Active</span>
+            </div>
+            <div style="display: flex; gap: 0.4rem; font-size: 0.74rem;">
+              <span class="badge" style="background: rgba(255,255,255,0.06); color: #fff;">🌧️ Rain</span>
+              <span class="badge" style="background: rgba(255,255,255,0.06); color: #fff;">⚡ 40Hz Beats</span>
+              <span class="badge" style="background: rgba(255,255,255,0.06); color: #fff;">🌲 Forest</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Equal Bento (6 columns) - Screen Time Telemetry -->
+        <div class="bento-card bento-card-equal">
+          <div class="bento-glow-overlay" style="background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);"></div>
+          <div>
+            <div class="bento-icon" style="color: var(--success); background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+              <i data-lucide="shield-alert"></i>
+            </div>
+            <div class="bento-content">
+              <div class="badge badge-low" style="margin-bottom: 0.6rem;">Behavioral Analytics</div>
+              <h3>Screen-Time Telemetry & Guardrails</h3>
+              <p>
+                Monitor study vs. distraction ratios automatically. Log visited sites with automatic categorization, set hourly category bounds, and receive soft ambient warnings when approaching time thresholds.
+              </p>
+            </div>
+          </div>
+
+          <div class="bento-preview-box">
+            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.5rem;">
+              <span style="color: var(--text-muted);">Social & Entertainment Cap</span>
+              <span style="color: #fbbf24; font-weight: 700;">38m of 45m Used</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
+              <div style="width: 84%; height: 100%; background: linear-gradient(90deg, #10b981, #f59e0b); border-radius: 999px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Equal Bento (6 columns) - Gamified Streaks & XP Mastery -->
+        <div class="bento-card bento-card-equal">
+          <div class="bento-glow-overlay" style="background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);"></div>
+          <div>
+            <div class="bento-icon" style="color: var(--warning); background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3);">
+              <i data-lucide="flame"></i>
+            </div>
+            <div class="bento-content">
+              <div class="badge badge-medium" style="margin-bottom: 0.6rem;">Gamified Quest Engine</div>
+              <h3>Daily Streaks, XP & Profile Mastery</h3>
+              <p>
+                Turn academic persistence into a high-reward game. Earn XP for completed Pomodoro blocks, level up from Novice Scholar to Grandmaster, and trigger celebratory confetti milestones as you crush deadlines.
+              </p>
+            </div>
+          </div>
+
+          <div class="bento-preview-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span style="font-size: 1.1rem;">🔥</span>
+                <span style="font-weight: 700; color: #fbbf24;">14-Day Consecutive Streak</span>
+              </div>
+              <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border-color: rgba(168, 85, 247, 0.4);">
+                Level 8 Grandmaster
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-Step Journey Section -->
+    <section id="how-it-works" style="padding: 4rem 0;">
+      <div class="section-header">
+        <div class="section-badge">
+          <i data-lucide="check-circle-2" style="width:14px; height:14px;"></i>
+          <span>Zero Friction Workflow</span>
+        </div>
+        <h2>From Overwhelmed to Exam-Ready in 3 Steps</h2>
+        <p>No tedious calendar setup. Drop your topics and let StudySync orchestrate your schedule.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Drop Your Syllabus</h3>
+          <p>
+            Upload your syllabus PDF or paste raw topic bullet points. Gemini AI identifies key exam milestones, assigns difficulty ratings, and formats a daily study calendar.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Lock In with Audio Immersion</h3>
+          <p>
+            Enter the Focus Room. Activate rain or 40Hz binaural beats, trigger the Pomodoro interval, and let StudySync monitor screen time limits and tab discipline.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Track, Auto-Reschedule & Ace</h3>
+          <p>
+            Review screen-time ratios, auto-reschedule any overdue tasks with one click, level up your XP profile, and walk into exam day fully prepared.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics Showcase -->
+    <section class="glass-card" style="padding: 3rem; margin: 3rem 0; text-align: center;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+        <div>
+          <h2 style="font-size: 3rem; color: var(--primary);">98.4%</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Syllabus Coverage Rate</p>
+        </div>
+        <div>
+          <h2 style="font-size: 3rem; color: var(--accent);">4.8 Hrs</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Avg. Daily Deep Focus</p>
+        </div>
+        <div>
+          <h2 style="font-size: 3rem; color: var(--success);">120K+</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">AI Study Tasks Completed</p>
+        </div>
+        <div>
+          <h2 style="font-size: 3rem; color: var(--warning);">15 Days</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Average Streak Record</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive FAQ Accordion -->
+    <section id="faq" class="faq-section">
+      <div class="section-header">
+        <div class="section-badge">
+          <i data-lucide="help-circle" style="width:14px; height:14px;"></i>
+          <span>Got Questions?</span>
+        </div>
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about the StudySync AI platform.</p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item active">
+          <button class="faq-question" type="button">
+            <span>How does the AI syllabus breakdown work?</span>
+            <span class="faq-toggle-icon"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="faq-answer">
+            StudySync uses Google's Gemini AI engine to parse syllabus text or uploaded documents. It identifies exam milestones, estimates cognitive difficulty, and generates daily scheduled slots tailored to your target exam date and daily study capacity.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Is screen-time tracking privacy-friendly?</span>
+            <span class="faq-toggle-icon"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="faq-answer">
+            Absolutely. All screen time telemetry is calculated securely in your browser session and stored locally in your private database. No sensitive browsing history is ever transmitted or sold to third-party data brokers.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Can I customize the ambient study soundscapes?</span>
+            <span class="faq-toggle-icon"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="faq-answer">
+            Yes! The Focus Room includes Web Audio soundscapes—Gentle Rain, White Noise, and 40Hz Gamma Binaural Beats. You can adjust individual volumes and mix them together for optimal focus.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>What happens if I miss a day or fall behind?</span>
+            <span class="faq-toggle-icon"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="faq-answer">
+            StudySync features an intelligent Auto-Rescheduling engine. It automatically identifies overdue high-priority tasks and shifts or spreads them into your upcoming study timetable without requiring manual rearrangement.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            <span>Is StudySync free to use?</span>
+            <span class="faq-toggle-icon"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="faq-answer">
+            Yes! All core features—AI syllabus breakdown, the Web Audio focus room, timetable scheduling, screen-time telemetry, gamified streaks, and the 24/7 AI Tutor chatbot—are completely free for students.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Radiant Call-to-Action Banner -->
+    <section class="radiant-cta-card">
+      <h2>Ready to Turn Exam Anxiety into Academic Momentum?</h2>
+      <p>
+        Join thousands of students who study smarter, finish their syllabi early, and retain more knowledge with AI precision.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="auth.html?mode=register" class="btn btn-primary" style="padding: 0.95rem 2.2rem; font-size: 1.05rem;">
+          <i data-lucide="zap"></i>
+          <span>Start Free Today</span>
+        </a>
+        <a href="dashboard.html" class="btn btn-glass" style="padding: 0.95rem 2rem; font-size: 1.05rem;">
+          <i data-lucide="compass"></i>
+          <span>Open Live Portal</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Simple Elegant Footer -->
+  <footer style="border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(10, 15, 30, 0.65); backdrop-filter: blur(20px); padding: 3rem 1.5rem 2.5rem 1.5rem; text-align: center; color: var(--text-muted); margin-top: 4rem;">
+    <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+      <div class="brand" style="font-size: 1.3rem;">
+        <div class="brand-icon">
+          <img src="favicon.svg" alt="StudySync AI Logo" class="brand-logo-img">
+        </div>
+        <span>StudySync AI</span>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin: 0; max-width: 480px;">
+        Smart AI-powered syllabus breakdown, deep focus room & screen-time habit tracking.
+      </p>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #6ee7b7; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.3rem 0.8rem; border-radius: 999px;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981;"></span>
+        <span>All AI Systems Operational</span>
+      </div>
+      <div style="border-top: 1px solid rgba(255, 255, 255, 0.06); width: 100%; padding-top: 1.25rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-dim);">
+        &copy; 2026 StudySync AI. Empowering high-performing students worldwide.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating AI Tutor Chatbot Widget -->
+  <div id="ai-chat-widget" class="chat-widget">
+    <button id="chat-launcher-btn" class="chat-launcher-btn" title="Ask StudySync AI Tutor">
+      <i data-lucide="bot" style="width:26px; height:26px;"></i>
+      <span class="chat-pulse-badge">AI Assistant</span>
+    </button>
+
+    <div id="chat-window" class="chat-window glass-card">
+      <div class="chat-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div class="chat-avatar"><i data-lucide="sparkles" style="width:18px; height:18px;"></i></div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">StudySync Tutor AI</div>
+            <div style="font-size: 0.75rem; color: #6ee7b7;">● Homework & Doubt Clearing Assistant</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <button id="chat-clear-btn" class="chat-header-btn chat-clear-btn" title="Clear Chat History">
+            <i data-lucide="trash-2" style="width:12px; height:12px;"></i>
+            <span>Clear</span>
+          </button>
+          <button id="chat-key-btn" class="chat-header-btn chat-key-btn" title="Link Gemini API Key">
+            <i data-lucide="key" style="width:12px; height:12px;"></i>
+            <span>Gemini Key</span>
+          </button>
+          <button id="close-chat-btn" class="chat-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.25rem; display: flex; align-items: center;" title="Close Chat">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Chips -->
+      <div class="chat-chips-container">
+        <button class="chat-chip" data-query="How to use Focus Room?">🎧 Focus Room</button>
+        <button class="chat-chip" data-query="How to generate AI Schedule?">📅 AI Schedule</button>
+        <button class="chat-chip" data-query="Explain Calculus Derivatives step by step">📐 Calculus Doubt</button>
+        <button class="chat-chip" data-query="Newton's 2nd Law of Motion">⚡ Physics Doubt</button>
+      </div>
+
+      <!-- Messages Container -->
+      <div id="chat-messages" class="chat-messages">
+        <div class="chat-message bot">
+          <div class="message-bubble">
+            👋 Hi! I'm StudySync Tutor AI. Ask me any homework doubt, conceptual topic, or how to navigate the portal!
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="chat-typing" class="chat-typing" style="display: none;">
+        <span>Tutor is thinking...</span>
+      </div>
+
+      <!-- Input Form -->
+      <form id="chat-input-form" class="chat-input-form">
+        <input type="text" id="chat-input" placeholder="Ask a doubt or homework question..." required autocomplete="off">
+        <button type="submit" class="btn btn-primary btn-sm" id="chat-send-btn">
+          <i data-lucide="send" style="width:16px; height:16px;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chat.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Check if user is logged in
+    const token = ApiClient.getToken();
+    if (token) {
+      const loginBtn = document.getElementById('nav-login-btn');
+      const startBtn = document.getElementById('nav-start-btn');
+      if (loginBtn) {
+        loginBtn.innerText = 'Dashboard';
+        loginBtn.href = 'dashboard.html';
+      }
+      if (startBtn) {
+        startBtn.innerText = 'Go to Portal';
+        startBtn.href = 'dashboard.html';
+      }
+    }
+
+    // Interactive FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.closest('.faq-item');
+        const isActive = item.classList.contains('active');
+        
+        // Close all items
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        
+        // Toggle current if it wasn't active
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

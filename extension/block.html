@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudySync - Site Blocked by Focus Shield</title>
+  <link rel="stylesheet" href="block.css">
+</head>
+<body>
+  <div class="block-backdrop"></div>
+  <div class="block-card">
+    <div class="shield-icon-container">
+      <svg class="shield-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+
+    <div class="badge-pill">StudySync Focus Shield</div>
+
+    <h1 class="block-title">Distraction Blocked!</h1>
+    
+    <p class="block-desc">
+      Access to <strong id="blocked-domain" class="domain-tag">this site</strong> is restricted while your StudySync focus session is running.
+    </p>
+
+    <!-- Session Status Panel -->
+    <div class="session-box">
+      <div class="session-item">
+        <span class="session-label">Session Timer</span>
+        <div class="timer-value" id="block-timer">--:--</div>
+      </div>
+      <div class="divider"></div>
+      <div class="session-item">
+        <span class="session-label">Shield Defenses</span>
+        <div class="attempt-value">Attempt #<span id="attempt-count">1</span></div>
+      </div>
+    </div>
+
+    <p class="study-quote">
+      “The secret of getting ahead is getting started. Focus on your goals today.”
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="block-actions">
+      <button class="btn btn-primary" id="return-studysync-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        <span>Return to StudySync Focus Zone</span>
+      </button>
+
+      <button class="btn btn-glass" id="close-tab-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        <span>Close This Tab</span>
+      </button>
+    </div>
+
+    <div class="footer-note">
+      <a href="#" id="emergency-pause-link">Emergency Pause Session</a> • StudySync Companion Extension v1.1
+    </div>
+  </div>
+
+  <script src="block.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Authentication - StudySync AI Planner</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Dynamic Multi-Layer Sliding Background -->
+  <div class="bg-scene-container" aria-hidden="true">
+    <div class="bg-sliding-grid"></div>
+    <div class="bg-sliding-aurora">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+    <div class="bg-sliding-beams">
+      <div class="light-beam light-beam-1"></div>
+      <div class="light-beam light-beam-2"></div>
+      <div class="light-beam light-beam-3"></div>
+    </div>
+    <div class="bg-floating-shapes">
+      <div class="float-shape shape-square-1"></div>
+      <div class="float-shape shape-square-2"></div>
+      <div class="float-shape shape-circle-1"></div>
+      <div class="float-shape shape-ring-1"></div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <div class="brand-icon">
+        <img src="favicon.svg" alt="StudySync AI Logo" class="brand-logo-img">
+      </div>
+      <span>StudySync AI</span>
+    </a>
+    <div>
+      <a href="index.html" class="btn btn-glass btn-sm">
+        <i data-lucide="arrow-left" style="width:16px; height:16px;"></i>
+        <span>Back to Home</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="auth-wrapper glass-card" style="margin-top: 3rem;">
+    <!-- Left Banner -->
+    <div class="auth-banner">
+      <div>
+        <div class="brand" style="margin-bottom: 2rem;">
+          <div class="brand-icon">
+            <img src="favicon.svg" alt="StudySync AI Logo" class="brand-logo-img">
+          </div>
+          <span>StudySync</span>
+        </div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 1rem;">Unlock Your <span class="gradient-text">Academic Potential</span></h2>
+        <p style="color: var(--text-muted); font-size: 1rem;">
+          AI schedule planning, focus soundscapes, and real-time screen-time optimization—all synchronized in one local portal.
+        </p>
+      </div>
+
+      <div style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+        <p style="font-style: italic; color: #e2e8f0; font-size: 0.95rem; margin-bottom: 0.5rem;">
+          "StudySync helped me prepare for my finals in half the time without feeling burned out."
+        </p>
+        <span style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">— Computer Science Major, MIT</span>
+      </div>
+    </div>
+
+    <!-- Right Form Card -->
+    <div class="auth-form-card">
+      <div style="margin-bottom: 2rem;">
+        <h2 id="auth-title" style="font-size: 1.8rem;">Welcome Back</h2>
+        <p id="auth-subtitle" style="color: var(--text-muted); font-size: 0.95rem;">
+          Sign in to access your AI study planner and focus tools.
+        </p>
+      </div>
+
+      <!-- Alert Notification Banner -->
+      <div id="auth-alert" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; margin-bottom: 1.25rem;"></div>
+
+      <form id="auth-form">
+        <div class="form-group" id="name-group" style="display: none;">
+          <label class="form-label" for="auth-name">Full Name</label>
+          <input type="text" id="auth-name" class="form-input" placeholder="Alex Morgan">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="auth-email">Email Address</label>
+          <input type="email" id="auth-email" class="form-input" placeholder="alex@university.edu" required>
+        </div>
+
+        <div class="form-group" id="password-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" for="auth-password" style="margin-bottom: 0;">Password</label>
+            <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--primary); font-weight: 500;">Forgot Password?</a>
+          </div>
+          <div style="position: relative;">
+            <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required style="padding-right: 2.5rem;">
+            <button type="button" id="toggle-password-btn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+              <i data-lucide="eye" id="eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" id="reset-token-group" style="display: none;">
+          <label class="form-label" for="auth-reset-token">6-Digit One-Time Password (OTP)</label>
+          <input type="text" id="auth-reset-token" class="form-input" placeholder="e.g. 482910" maxlength="6" style="letter-spacing: 0.2em; font-weight: 700; font-family: monospace; font-size: 1.1rem; text-align: center;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="auth-submit-btn" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+          <i data-lucide="log-in" id="submit-icon"></i>
+          <span id="submit-text">Sign In</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.75rem; font-size: 0.9rem; color: var(--text-muted);">
+        <span id="auth-toggle-text">Don't have an account?</span>
+        <a href="#" id="auth-toggle-link" style="font-weight: 600; margin-left: 0.4rem;">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

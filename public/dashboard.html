@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Student Portal - StudySync AI Planner</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+  <!-- Google Fonts & CDN Libraries -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Dynamic Multi-Layer Sliding Background -->
+  <div class="bg-scene-container" aria-hidden="true">
+    <div class="bg-sliding-grid"></div>
+    <div class="bg-sliding-aurora">
+      <div class="aurora-orb aurora-orb-1"></div>
+      <div class="aurora-orb aurora-orb-2"></div>
+      <div class="aurora-orb aurora-orb-3"></div>
+    </div>
+    <div class="bg-sliding-beams">
+      <div class="light-beam light-beam-1"></div>
+      <div class="light-beam light-beam-2"></div>
+      <div class="light-beam light-beam-3"></div>
+    </div>
+    <div class="bg-floating-shapes">
+      <div class="float-shape shape-square-1"></div>
+      <div class="float-shape shape-square-2"></div>
+      <div class="float-shape shape-circle-1"></div>
+      <div class="float-shape shape-ring-1"></div>
+    </div>
+  </div>
+
+  <!-- Top Navigation Header -->
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <img src="favicon.svg" alt="StudySync AI Logo" class="brand-logo-img">
+      </div>
+      <span>StudySync</span>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav-links">
+      <li class="nav-item active" data-tab="planner-tab">
+        <i data-lucide="calendar" style="width:17px; height:17px;"></i>
+        <span>AI Planner</span>
+      </li>
+      <li class="nav-item" data-tab="focus-tab">
+        <i data-lucide="headphones" style="width:17px; height:17px;"></i>
+        <span>Focus Room</span>
+      </li>
+      <li class="nav-item" data-tab="screentime-tab">
+        <i data-lucide="bar-chart-3" style="width:17px; height:17px;"></i>
+        <span>Screen Time</span>
+      </li>
+      <li class="nav-item" data-tab="settings-tab" style="display: none;">
+        <i data-lucide="user-cog" style="width:17px; height:17px;"></i>
+        <span>Settings</span>
+      </li>
+    </ul>
+
+    <!-- Clean Gamification Badges & User Profile Menu -->
+    <div class="nav-right-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+      <!-- Glassmorphic Theme Switcher Dropdown -->
+      <div class="theme-dropdown-container">
+        <button type="button" class="theme-pill" id="theme-dropdown-btn" title="Switch Glassmorphism Theme">
+          <i data-lucide="palette" style="width:15px; height:15px; color: var(--primary);"></i>
+          <span id="current-theme-label">Modern Indigo</span>
+          <i data-lucide="chevron-down" style="width:12px; height:12px; opacity:0.6;"></i>
+        </button>
+
+        <div class="theme-dropdown-menu" id="theme-dropdown-menu">
+          <div class="theme-option-item active" data-theme="default">
+            <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #6366f1, #a855f7);"></span>
+            <span>Modern Indigo</span>
+          </div>
+          <div class="theme-option-item" data-theme="cyberpunk">
+            <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #00f0ff, #ff007f);"></span>
+            <span>Cyberpunk Neon</span>
+          </div>
+          <div class="theme-option-item" data-theme="cozy-cafe">
+            <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #f59e0b, #78350f);"></span>
+            <span>Cozy Coffee Shop</span>
+          </div>
+          <div class="theme-option-item" data-theme="midnight-oled">
+            <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #000000, #10b981);"></span>
+            <span>Midnight OLED</span>
+          </div>
+          <div class="theme-option-item" data-theme="studio-ghibli">
+            <span class="theme-swatch-dot" style="background: linear-gradient(135deg, #10b981, #f472b6);"></span>
+            <span>Studio Ghibli</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak Pill -->
+      <div class="streak-pill" title="Current Daily Streak">
+        <i data-lucide="flame" style="width:16px; height:16px; color:#f59e0b;"></i>
+        <strong id="header-streak-count">0</strong>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Days</span>
+      </div>
+
+      <!-- Level Pill -->
+      <div class="level-pill" title="Student Rank & Level">
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Lvl</span>
+        <strong id="header-user-level" style="color:#fff;">1</strong>
+        <span id="header-student-title-badge" class="badge-title-pill">Backbencher 🛋️</span>
+      </div>
+
+      <!-- Profile Dropdown Trigger -->
+      <div class="profile-dropdown-container">
+        <div class="user-profile-badge" id="user-profile-toggle" title="User Profile Menu">
+          <div class="user-avatar-circle" id="user-avatar-initials">U</div>
+          <span id="user-name-display" class="user-name-text">Student</span>
+          <i data-lucide="chevron-down" style="width:14px; height:14px; opacity:0.6; margin-left: 0.1rem;"></i>
+        </div>
+
+        <!-- Floating Glass Profile Menu -->
+        <div class="profile-dropdown-menu glass-card" id="profile-dropdown-menu">
+          <div class="dropdown-header">
+            <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">XP Progress</div>
+            <div class="dropdown-xp-display" id="header-user-xp">0 / 100 XP</div>
+          </div>
+
+          <div class="level-bar" style="margin: 0.4rem 0 0.8rem 0;">
+            <div class="level-progress" id="header-xp-progress"></div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-item" id="profile-settings-btn">
+            <i data-lucide="settings" style="width:16px; height:16px; color: var(--primary);"></i>
+            <span>Account Settings</span>
+          </div>
+
+          <div class="dropdown-item danger" id="logout-btn">
+            <i data-lucide="log-out" style="width:16px; height:16px;"></i>
+            <span>Sign Out</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Student Portal Container -->
+  <main class="main-container">
+
+    <!-- TAB 1: AI PLANNER & TASKS -->
+    <section id="planner-tab" class="tab-content active">
+      <!-- Exam Countdown Banner -->
+      <div class="glass-card exam-countdown-card" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;">
+            <i data-lucide="target" style="width:18px; height:18px;"></i>
+            <span>Exam Readiness Engine</span>
+            <span class="live-dot-pulse" style="margin-left: 2px;"></span>
+          </div>
+          <h2 id="planner-exam-title" style="font-size: 1.5rem;">Target Exam Countdown</h2>
+          <p id="planner-exam-subtitle" style="color: var(--text-muted); font-size: 0.9rem;">Generate your schedule to unlock your exam timer.</p>
+        </div>
+
+        <div class="exam-countdown-stats" style="display: flex; gap: 1.5rem; align-items: center;">
+          <div style="text-align: center;">
+            <div id="countdown-days" style="font-size: 2.2rem; font-weight: 800; color: var(--primary);">--</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Days Left</div>
+          </div>
+
+          <div style="width: 1px; height: 40px; background: var(--glass-border);"></div>
+
+          <div style="text-align: center;">
+            <div id="task-progress-ratio" style="font-size: 2.2rem; font-weight: 800; color: var(--success);">0 / 0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Tasks Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Syllabus Deficit Alert Banner (Visible when tasks are overdue or fallen behind) -->
+      <div id="rebalance-alert-banner" class="glass-card" style="display: none; padding: 1.1rem 1.5rem; margin-bottom: 1.5rem; border-color: rgba(245, 158, 11, 0.4); background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(239, 68, 68, 0.08)); justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <div style="background: rgba(245, 158, 11, 0.2); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
+            <i data-lucide="alert-triangle" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.98rem; color: #fbbf24;" id="rebalance-alert-title">Overdue Study Tasks Detected!</div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem;" id="rebalance-alert-subtitle">
+              You missed tasks from previous days. Let AI redistribute them evenly across your remaining study days without cramming.
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+          <button class="btn btn-sm btn-warning" id="banner-rebalance-btn" style="background: #f59e0b; color: #000; font-weight: 700;">
+            <i data-lucide="sparkles" style="width:14px; height:14px;"></i>
+            <span>Smart Rebalance</span>
+          </button>
+          <button class="btn btn-sm btn-glass" id="banner-sickday-btn">
+            <i data-lucide="coffee" style="width:14px; height:14px;"></i>
+            <span>Take Sick Day</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Planner Layout -->
+      <div class="planner-grid">
+        <!-- Sidebar Controls -->
+        <div class="planner-sidebar" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="glass-card" style="padding: 1.5rem;">
+            <h3 style="margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="sparkles" style="color: var(--accent);"></i>
+              <span>AI Schedule Builder</span>
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+              Paste your course syllabus topics and set your exam date to get an AI-structured daily schedule.
+            </p>
+            <button class="btn btn-primary" id="open-ai-modal-btn" style="width: 100%; margin-bottom: 0.65rem;">
+              <i data-lucide="cpu"></i>
+              <span>Generate AI Schedule</span>
+            </button>
+
+            <!-- Dynamic AI Rebalancer Quick Action -->
+            <button class="btn btn-glass" id="open-rebalance-modal-btn" style="width: 100%; font-size: 0.84rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+              <i data-lucide="scale" style="color: var(--warning); width:15px; height:15px;"></i>
+              <span>Smart Syllabus Rebalancer</span>
+            </button>
+          </div>
+
+          <div class="glass-card" style="padding: 1.5rem;">
+            <h3 style="margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="plus-circle" style="color: var(--primary);"></i>
+              <span>Custom Task</span>
+            </h3>
+            
+            <form id="custom-task-form">
+              <div class="form-group">
+                <label class="form-label">Task Title</label>
+                <input type="text" id="task-title-input" class="form-input" placeholder="e.g. Chapter 4 Integration" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <input type="text" id="task-subject-input" class="form-input" placeholder="e.g. Calculus" required>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="form-group">
+                  <label class="form-label">Date</label>
+                  <input type="date" id="task-date-input" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Priority</label>
+                  <select id="task-priority-input" class="form-select">
+                    <option value="High">High</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-glass" style="width: 100%; margin-top: 0.5rem;">
+                <i data-lucide="plus"></i>
+                <span>Add Task</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Main Task Board & Daily Timetable Container -->
+        <div class="glass-card planner-main" style="padding: 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+            <!-- Mode Switcher Toggle -->
+            <div class="view-mode-toggle" style="display: flex; gap: 0.35rem; background: rgba(15, 23, 42, 0.5); padding: 0.3rem; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <button id="view-mode-tasks-btn" class="btn btn-sm view-mode-btn active" style="padding: 0.4rem 0.85rem; font-weight: 600;">
+                <i data-lucide="check-square" style="width:14px; height:14px;"></i>
+                <span>Task Board</span>
+              </button>
+              <button id="view-mode-timetable-btn" class="btn btn-sm btn-glass view-mode-btn" style="padding: 0.4rem 0.85rem; font-weight: 600;">
+                <i data-lucide="clock" style="width:14px; height:14px;"></i>
+                <span>Daily Timetable</span>
+              </button>
+            </div>
+
+            <!-- Task Filters (Visible in Task Board View) -->
+            <div id="task-filters-container" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-glass btn-sm task-filter-btn active" data-filter="all">All</button>
+              <button class="btn btn-glass btn-sm task-filter-btn" data-filter="pending">Pending</button>
+              <button class="btn btn-glass btn-sm task-filter-btn" data-filter="completed">Completed</button>
+              <button class="btn btn-glass btn-sm task-filter-btn" data-filter="High">High</button>
+              <button class="btn btn-glass btn-sm task-filter-btn" data-filter="Medium">Medium</button>
+              <button class="btn btn-glass btn-sm task-filter-btn" data-filter="Low">Low</button>
+            </div>
+
+            <!-- Timetable Action Controls (Visible in Timetable View) -->
+            <div id="timetable-controls-container" style="display: none; gap: 0.5rem; flex-wrap: wrap;">
+              <button id="open-routine-config-btn" class="btn btn-glass btn-sm">
+                <i data-lucide="settings" style="width:14px; height:14px;"></i>
+                <span>Routine Settings</span>
+              </button>
+              <button id="refresh-timetable-btn" class="btn btn-success btn-sm">
+                <i data-lucide="refresh-cw" style="width:14px; height:14px;"></i>
+                <span>Refresh Timetable</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Task Board View -->
+          <div id="task-board-view">
+            <div id="tasks-empty-state" style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+              <i data-lucide="calendar-x" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;"></i>
+              <p style="font-size: 1.1rem; font-weight: 500;">No tasks found.</p>
+              <p style="font-size: 0.9rem;">Click "Generate AI Schedule" to create your customized study plan.</p>
+            </div>
+            <div id="task-list" class="task-list"></div>
+          </div>
+
+          <!-- Timetable View -->
+          <div id="timetable-view" style="display: none;">
+            <div id="timetable-empty-state" style="text-align: center; padding: 3rem 1rem; color: var(--text-muted); display: none;">
+              <i data-lucide="clock" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;"></i>
+              <p style="font-size: 1.1rem; font-weight: 500;">No timetable generated yet.</p>
+              <p style="font-size: 0.9rem;">Add tasks or generate an AI schedule to build your daily time-blocked schedule.</p>
+            </div>
+            <div id="timetable-list" class="timetable-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: FOCUS ROOM -->
+    <section id="focus-tab" class="tab-content">
+      <div class="focus-room-layout">
+        <!-- COLUMN 1: Deep Focus Sanctuary & Ambient Synthesizers -->
+        <div class="glass-card focus-container" style="max-width: none; margin: 0; width: 100%;">
+          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem;">
+              <i data-lucide="zap"></i>
+              <span>Deep Focus Sanctuary</span>
+            </div>
+            <!-- Live Active Session XP indicator -->
+            <span class="badge badge-high" style="font-size: 0.75rem; background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe;">
+              ⚡ 2x XP / Min
+            </span>
+          </div>
+
+          <!-- Mode Buttons & Custom Focus Time Limit Input -->
+          <div style="display: flex; gap: 0.75rem; margin: 1.5rem 0; flex-wrap: wrap; align-items: center; justify-content: center;">
+            <button class="btn btn-glass btn-sm timer-mode-btn active" data-minutes="25" data-mode="Pomodoro">Pomodoro (25m)</button>
+            <button class="btn btn-glass btn-sm timer-mode-btn" data-minutes="5" data-mode="Short Break">Short Break (5m)</button>
+            <button class="btn btn-glass btn-sm timer-mode-btn" data-minutes="15" data-mode="Long Break">Long Break (15m)</button>
+            <button class="btn btn-glass btn-sm timer-mode-btn" data-minutes="50" data-mode="Deep Work">Deep Work (50m)</button>
+
+            <!-- Custom Focus Limit Input -->
+            <div class="custom-timer-box" style="display: flex; align-items: center; gap: 0.4rem; background: var(--glass-bg); padding: 0.25rem 0.6rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+              <i data-lucide="clock" style="width: 15px; height: 15px; color: var(--primary);"></i>
+              <input type="number" id="custom-minutes-input" min="1" max="300" value="30" placeholder="Custom" style="width: 55px; background: transparent; border: none; color: #fff; font-weight: 600; font-size: 0.85rem; text-align: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">mins</span>
+              <button class="btn btn-primary btn-sm" id="apply-custom-mode-btn" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;">Set</button>
+            </div>
+          </div>
+
+          <!-- Large Timer Display -->
+          <div class="timer-display" id="timer-clock">25:00</div>
+          
+          <p id="timer-status-text" style="color: var(--text-muted); font-size: 1rem;">Ready to focus? Pick your soundscape and start.</p>
+
+          <!-- Timer Action Controls -->
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center;">
+            <button class="btn btn-primary" id="timer-start-btn" style="min-width: 140px; padding: 0.85rem 1.75rem;">
+              <i data-lucide="play" id="timer-play-icon"></i>
+              <span id="timer-btn-text">Start Focus</span>
+            </button>
+
+            <button class="btn btn-glass" id="timer-reset-btn">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset</span>
+            </button>
+
+            <button class="btn btn-glass" id="fullscreen-btn" title="Toggle Distraction-Free Fullscreen">
+              <i data-lucide="maximize"></i>
+              <span>Fullscreen</span>
+            </button>
+          </div>
+
+          <!-- Ambient Sound Controls (8 Web Audio Synthesizer Presets) -->
+          <div style="width: 100%; margin-top: 2rem; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="music" style="color: var(--primary);"></i>
+                <span>Ambient Soundscapes</span>
+              </h3>
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i data-lucide="volume-2" style="width: 15px; height: 15px; color: var(--text-muted);"></i>
+                <input type="range" id="sound-volume-slider" min="0" max="1" step="0.05" value="0.5" style="width: 110px; accent-color: var(--primary);" title="Soundscape Volume">
+              </div>
+            </div>
+
+            <div class="sound-controls" style="grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 0.6rem; margin: 0.5rem 0 1.25rem 0;">
+              <button class="sound-btn active" data-sound="none">
+                <i data-lucide="volume-x"></i>
+                <span>Silent</span>
+              </button>
+              <button class="sound-btn" data-sound="rain">
+                <i data-lucide="cloud-rain"></i>
+                <span>Rain</span>
+              </button>
+              <button class="sound-btn" data-sound="whitenoise">
+                <i data-lucide="waves"></i>
+                <span>White Noise</span>
+              </button>
+              <button class="sound-btn" data-sound="binaural">
+                <i data-lucide="radio"></i>
+                <span>Binaural</span>
+              </button>
+              <button class="sound-btn" data-sound="chime">
+                <i data-lucide="bell"></i>
+                <span>Zen Chime</span>
+              </button>
+              <button class="sound-btn" data-sound="cafe">
+                <i data-lucide="coffee"></i>
+                <span>Cafe Chatter</span>
+              </button>
+              <button class="sound-btn" data-sound="campfire">
+                <i data-lucide="flame"></i>
+                <span>Campfire</span>
+              </button>
+              <button class="sound-btn" data-sound="keyboard">
+                <i data-lucide="keyboard"></i>
+                <span>Keyboard</span>
+              </button>
+              <button class="sound-btn" data-sound="lofi">
+                <i data-lucide="disc"></i>
+                <span>Lo-Fi Radio</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Strict Focus Protection Badge -->
+          <div class="distraction-badge" id="distraction-badge-container">
+            <i data-lucide="shield-check" id="focus-shield-icon" style="color: var(--primary);"></i>
+            <span id="focus-lock-status-text">Focus Lock Standby: Tab & Window switching will be restricted when timer starts.</span>
+          </div>
+
+          <!-- Companion Extension Status Banner -->
+          <div id="extension-status-banner" style="margin-top: 1rem; width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(30, 41, 59, 0.6); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem;">
+              <span id="extension-status-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; display: inline-block; transition: all 0.3s ease;"></span>
+              <span id="extension-status-text" style="color: var(--text-muted);">Companion Extension: Checking connection...</span>
+            </div>
+            <button type="button" id="extension-guide-btn" class="btn btn-glass btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;">
+              <i data-lucide="puzzle" style="width:13px; height:13px;"></i>
+              <span>Extension Setup Guide</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: Virtual Desk Companion & Wellness Radar Side Panel -->
+        <div class="focus-side-panel">
+          <!-- WIDGET 1: Virtual Desk Companion / Study Garden (RPG Mechanic) -->
+          <div class="glass-card companion-card" id="companion-card">
+            <div class="companion-header">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="sprout" style="color: #34d399;"></i>
+                <h3 style="font-size: 1.1rem;" id="companion-title">Desk Companion</h3>
+              </div>
+              <button type="button" class="btn btn-glass btn-sm" id="switch-companion-type-btn" style="padding: 0.25rem 0.65rem; font-size: 0.75rem;" title="Switch Plant or Pet Avatar">
+                <i data-lucide="repeat" style="width:13px; height:13px;"></i>
+                <span id="companion-type-label">Plant 🌿</span>
+              </button>
+            </div>
+
+            <!-- Terrarium Stage Viewport (Spatial 3D Desk Setup) -->
+            <div class="companion-stage-box" id="companion-stage-box">
+              <div class="companion-viewport">
+                <div class="companion-avatar-emoji" id="companion-avatar-emoji">🌱</div>
+                <div class="companion-podium"></div>
+              </div>
+              <!-- Dedicated Spatial Desk Decor Layer -->
+              <div id="spatial-decor-container">
+                <!-- Spatial decor items placed around the desk -->
+              </div>
+            </div>
+
+            <!-- Clean Equipped Decor Showcase Dock -->
+            <div class="equipped-decor-shelf" id="equipped-decor-shelf">
+              <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); font-size: 0.75rem;">
+                <i data-lucide="sparkles" style="width: 13px; height: 13px; color: var(--primary);"></i>
+                <span>Desk Decor:</span>
+              </div>
+              <div class="shelf-slots-row" id="shelf-slots-row">
+                <!-- Mini decor tokens rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Stage Title & Vitality Status -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <div>
+                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Stage</span>
+                <div style="font-weight: 700; font-size: 0.95rem; color: #fff;" id="companion-stage-name">Sprout (Stage 1)</div>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Vitality</span>
+                <div style="font-weight: 700; font-size: 0.95rem; color: #34d399;" id="companion-vitality-text">100%</div>
+              </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="companion-bars-grid">
+              <!-- Vitality Meter -->
+              <div class="companion-metric">
+                <div class="metric-label-row">
+                  <span>Health & Vitality</span>
+                  <span id="vitality-status-label" style="color: #34d399;">Flourishing 🌿</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill progress-vitality" id="companion-vitality-bar" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- Growth Points -->
+              <div class="companion-metric">
+                <div class="metric-label-row">
+                  <span>Growth to Next Stage</span>
+                  <span id="companion-growth-text">0 / 50 GP</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill progress-growth" id="companion-growth-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions: Water / Nurture & Open Decor Closet -->
+            <div class="companion-actions-row">
+              <button type="button" class="btn btn-primary btn-sm" id="water-companion-btn" style="flex: 1; padding: 0.6rem 0.9rem;">
+                <i data-lucide="droplet"></i>
+                <span>Water Companion</span>
+              </button>
+              <button type="button" class="btn btn-glass btn-sm" id="open-decor-modal-btn" style="padding: 0.6rem 0.9rem;">
+                <i data-lucide="gift"></i>
+                <span>Desk Decor</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- WIDGET 2: Smart Burnout Detection & Wellness Radar -->
+          <div class="glass-card wellness-card" id="wellness-radar-card">
+            <div class="wellness-header">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="heart-pulse" style="color: #f43f5e;"></i>
+                <h3 style="font-size: 1.1rem;">Wellness Radar</h3>
+              </div>
+              <span class="risk-tag optimal" id="wellness-risk-pill">Optimal Pace</span>
+            </div>
+
+            <!-- Burnout Risk Gauge & Diagnostic Summary -->
+            <div class="wellness-gauge-box">
+              <div class="wellness-dial" id="wellness-score-dial">
+                <span class="wellness-score-num" id="wellness-score-display">100</span>
+                <span class="wellness-score-sub">Score</span>
+              </div>
+              <div class="wellness-status-desc">
+                <div style="font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem;" id="wellness-pace-title">Peak Cognitive Rhythm</div>
+                <p style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;" id="wellness-summary-text">
+                  Balanced study rhythm. Staying hydrated and pacing prevents study fatigue!
+                </p>
+              </div>
+            </div>
+
+            <!-- Hydration Counter Tracker -->
+            <div class="hydration-section">
+              <div class="hydration-header-row">
+                <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; color: #fff;">
+                  <i data-lucide="droplets" style="width: 15px; height: 15px; color: #38bdf8;"></i>
+                  <span>Daily Hydration (<span id="hydration-count-text">0</span>/8)</span>
+                </div>
+                <button type="button" class="btn btn-glass btn-sm" id="log-water-glass-btn" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; color: #38bdf8;">
+                  + Drink Glass 💧
+                </button>
+              </div>
+              <div class="glasses-grid" id="hydration-glasses-grid">
+                <!-- 8 glass slots rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- AI Wellness & Eye-Rest Recommendations -->
+            <div class="wellness-recs-container" id="wellness-recs-container">
+              <!-- Dynamic recommendation chips -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SCREEN TIME ANALYTICS -->
+    <section id="screentime-tab" class="tab-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2>Screen Time & Daily Productivity Analytics</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Monitor daily category allocation, compare screen time across dates, and manage screen logs.</p>
+        </div>
+
+        <button class="btn btn-primary btn-sm" id="open-screentime-modal-btn">
+          <i data-lucide="plus-circle"></i>
+          <span>Log Screen Time</span>
+        </button>
+      </div>
+
+      <!-- Limit Alert Warning Banner -->
+      <div id="screentime-limit-alert" style="display: none; padding: 1rem; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+          <i data-lucide="alert-circle"></i>
+          <span>Screen Time Limit Exceeded Warning!</span>
+        </div>
+        <p id="screentime-alert-text" style="font-size: 0.9rem; margin-top: 0.25rem;"></p>
+      </div>
+
+      <!-- Analytics Charts Grid -->
+      <div class="analytics-grid">
+        <!-- Chart 1: Today's Category Allocation Pie Chart (Refreshes Daily) -->
+        <div class="glass-card chart-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="pie-chart" style="color: var(--primary);"></i>
+              <span>Today's Category Allocation</span>
+            </h3>
+            <span id="screentime-today-total-badge" class="badge badge-medium" style="font-size: 0.78rem;">Today: 0m</span>
+          </div>
+          <div style="position: relative; height: 260px;">
+            <canvas id="category-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Date-by-Date Screen Time Comparison Bar Chart -->
+        <div class="glass-card chart-card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="bar-chart-3" style="color: var(--accent);"></i>
+            <span>Screen Time Comparison by Date</span>
+          </h3>
+          <div style="position: relative; height: 260px;">
+            <canvas id="screentime-bar-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sites Visited & Allotted Categories Table -->
+      <div class="glass-card" style="padding: 1.5rem; margin-top: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h3 style="font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <i data-lucide="globe" style="color: var(--primary);"></i>
+              <span>Sites Visited & Allotted Categories</span>
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+              Browsing activity and domain categories automatically captured via Companion Extension and manual entries.
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+            <button type="button" id="sync-screentime-now-btn" class="btn btn-glass btn-sm" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; display: flex; align-items: center; gap: 0.35rem; border-color: rgba(99, 102, 241, 0.4);" title="Trigger instant background synchronization of visited websites">
+              <i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i>
+              <span>Sync Live Browsing</span>
+            </button>
+            <span class="badge badge-low" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+              <i data-lucide="activity" style="width: 12px; height: 12px; margin-right: 4px;"></i> Live Auto-Categorized
+            </span>
+          </div>
+        </div>
+
+        <div class="screentime-table-container" style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--glass-border); color: var(--text-muted);">
+                <th style="padding: 0.75rem 0.75rem;">Website & Real URL</th>
+                <th style="padding: 0.75rem 0.75rem;">Allotted Category</th>
+                <th style="padding: 0.75rem 0.75rem;">Time Spent</th>
+                <th style="padding: 0.75rem 0.75rem;">Date</th>
+                <th style="padding: 0.75rem 0.75rem; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="screentime-logs-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 1.5rem; color: var(--text-muted);">No site visits or screen time logs recorded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Category Limit Settings Card -->
+      <div class="glass-card" style="padding: 1.5rem; margin-top: 1.5rem;">
+        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="shield-alert" style="color: var(--warning);"></i>
+          <span>Category Daily Screen Time Limiters</span>
+        </h3>
+
+        <form id="screentime-limits-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Social Media Limit (mins)</label>
+            <input type="number" id="limit-social-input" class="form-input" placeholder="60" value="60">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Entertainment Limit (mins)</label>
+            <input type="number" id="limit-entertainment-input" class="form-input" placeholder="90" value="90">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Gaming Limit (mins)</label>
+            <input type="number" id="limit-gaming-input" class="form-input" placeholder="45" value="45">
+          </div>
+          <button type="submit" class="btn btn-glass" style="height: 42px;">
+            <i data-lucide="save"></i>
+            <span>Save Limits</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 4: ACCOUNT SETTINGS & PROFILE PAGE -->
+    <section id="settings-tab" class="tab-content">
+      <div class="glass-card" style="padding: 2rem; max-width: 750px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+          <div>
+            <h2 style="font-size: 1.6rem; display: flex; align-items: center; gap: 0.6rem;">
+              <i data-lucide="user-cog" style="color: var(--primary);"></i>
+              <span>Account Settings & Profile</span>
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Manage your personal profile, Gemini API key, and account security.</p>
+          </div>
+        </div>
+
+        <form id="settings-tab-profile-form">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="user" style="width:16px; height:16px;"></i>
+            <span>Personal Profile & Credentials</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="page-settings-name" class="form-input" placeholder="Alex Morgan" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="page-settings-email" class="form-input" placeholder="alex@university.edu" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">New Password (leave blank to keep current password)</label>
+            <input type="password" id="page-settings-password" class="form-input" placeholder="••••••••">
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin: 2rem 0 1rem 0; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="key" style="width:16px; height:16px;"></i>
+            <span>Gemini AI Key (Per-User DB Encrypted)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Gemini API Key</label>
+            <input type="password" id="page-settings-key" class="form-input" placeholder="AIzaSy... (leave blank to keep current)">
+            <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Stored securely in your encrypted user database record for AI Tutoring & Planning.</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
+            <button type="button" id="page-delete-account-btn" class="btn btn-danger" style="padding: 0.65rem 1.25rem;">
+              <i data-lucide="trash-2"></i>
+              <span>Delete Account Permanently</span>
+            </button>
+
+            <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.75rem;">
+              <i data-lucide="save"></i>
+              <span>Save Account Settings</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: AI Schedule Generator -->
+  <div class="modal-overlay" id="ai-modal">
+    <div class="modal-content">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="cpu" style="color: var(--accent);"></i>
+          <span>Gemini AI Schedule Generator</span>
+        </h3>
+        <button id="close-ai-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="ai-generator-form">
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label class="form-label" style="margin-bottom: 0;">Syllabus / Course Topics</label>
+            <label for="ai-file-upload" class="btn btn-glass btn-sm" style="cursor: pointer; padding: 0.2rem 0.6rem; font-size: 0.75rem;">
+              <i data-lucide="file-up" style="width:13px; height:13px;"></i>
+              <span id="upload-file-btn-text">Upload PDF/TXT</span>
+            </label>
+            <input type="file" id="ai-file-upload" accept=".pdf,.txt" style="display: none;">
+          </div>
+          <textarea id="ai-syllabus-input" class="form-textarea" rows="5" placeholder="Upload a PDF/TXT syllabus or paste course topics here..." required></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Target Exam Date</label>
+            <input type="date" id="ai-exam-date-input" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Daily Capacity (Hours/Day)</label>
+            <input type="number" id="ai-daily-hours-input" class="form-input" min="1" max="12" value="3" required>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-glass" id="cancel-ai-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="generate-ai-submit-btn">
+            <i data-lucide="sparkles"></i>
+            <span id="ai-btn-text">Generate Schedule</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Dynamic AI Syllabus Rebalancer -->
+  <div class="modal-overlay" id="rebalance-modal">
+    <div class="modal-content glass-card" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="scale" style="color: var(--accent);"></i>
+          <span>Dynamic AI Syllabus Rebalancer</span>
+        </h3>
+        <button id="close-rebalance-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem; line-height: 1.5;">
+        Fell behind, missed a day, or took sick leave? The rebalancer calculates your remaining time until the exam and automatically redistributes unfinished topics evenly across future days without cramming.
+      </p>
+
+      <!-- Live Deficit Summary Stats Card -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.75rem; background: rgba(15, 23, 42, 0.6); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-bottom: 1.25rem; text-align: center;">
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Missed Tasks</div>
+          <div id="modal-overdue-count" style="font-size: 1.35rem; font-weight: 800; color: #f87171;">0</div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Deficit Time</div>
+          <div id="modal-overdue-hours" style="font-size: 1.35rem; font-weight: 800; color: #fbbf24;">0h</div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Days to Exam</div>
+          <div id="modal-days-left" style="font-size: 1.35rem; font-weight: 800; color: var(--primary);">--</div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">New Daily Load</div>
+          <div id="modal-req-hours" style="font-size: 1.35rem; font-weight: 800; color: #34d399;">~2.5h/d</div>
+        </div>
+      </div>
+
+      <form id="rebalance-form">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Target Exam Date</label>
+            <input type="date" id="rebalance-exam-date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Daily Study Limit (Hours)</label>
+            <input type="number" id="rebalance-daily-hours" class="form-input" min="1" max="14" step="0.5" value="3" required>
+          </div>
+        </div>
+
+        <!-- Rebalancing Strategy -->
+        <div class="form-group">
+          <label class="form-label">Rebalancing Strategy</label>
+          <select id="rebalance-mode-select" class="form-select">
+            <option value="even" selected>Balanced Even Spread (Recommended — No Cramming)</option>
+            <option value="priority">Priority-First (Core & High-Yield topics scheduled earliest)</option>
+          </select>
+        </div>
+
+        <!-- Sick Day / Rest Day Checkbox & Date Picker -->
+        <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label for="sick-day-toggle" style="font-size: 0.88rem; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="coffee" style="width:16px; height:16px; color: #f59e0b;"></i>
+              <span>Include Rest / Sick Day (Clear that day completely)</span>
+            </label>
+            <input type="checkbox" id="sick-day-toggle" style="accent-color: var(--primary); width:16px; height:16px; cursor: pointer;">
+          </div>
+          <div id="sick-day-container" style="display: none; margin-top: 0.75rem;">
+            <label class="form-label" style="font-size: 0.8rem;">Select Rest / Sick Date</label>
+            <input type="date" id="sick-day-date-input" class="form-input">
+            <span style="font-size: 0.74rem; color: var(--text-muted); margin-top: 0.2rem; display: block;">
+              All study tasks scheduled for this date will be pushed forward across remaining days.
+            </span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-glass" id="cancel-rebalance-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submit-rebalance-btn">
+            <i data-lucide="sparkles"></i>
+            <span id="rebalance-btn-text">Confirm & Rebalance Schedule</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Log Screen Time Entry -->
+  <div class="modal-overlay" id="screentime-modal">
+    <div class="modal-content">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3>Log Screen Time Activity</h3>
+        <button id="close-screentime-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="screentime-log-form">
+        <div class="form-group">
+          <label class="form-label">Website / App Name <span style="font-size: 0.78rem; color: var(--text-muted);">(Optional)</span></label>
+          <input type="text" id="log-site-input" class="form-input" placeholder="e.g., YouTube, GitHub, LeetCode">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Website URL <span style="font-size: 0.78rem; color: var(--text-muted);">(Optional)</span></label>
+          <input type="text" id="log-url-input" class="form-input" placeholder="e.g., https://youtube.com or youtube.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Allotted Category</label>
+          <select id="log-category-input" class="form-select" required>
+            <option value="Study">Study / Academic</option>
+            <option value="Social Media">Social Media</option>
+            <option value="Entertainment">Entertainment / Videos</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Productive Utilities">Productive Utilities</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Time Spent (Minutes)</label>
+          <input type="number" id="log-minutes-input" class="form-input" min="5" max="1440" placeholder="45" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="date" id="log-date-input" class="form-input" required>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-glass" id="cancel-screentime-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i>
+            <span>Log Activity</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Routine & Timetable Settings Modal -->
+  <div id="routine-config-modal" class="modal-overlay">
+    <div class="modal-content glass-card" style="max-width: 540px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="clock" style="color: var(--primary);"></i>
+          <span>Customize Daily Routine Hours</span>
+        </h3>
+        <button id="close-routine-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+        Configure your school, meal, and sleep times. The AI Timetable automatically places study tasks and short breaks into your free study windows!
+      </p>
+
+      <form id="routine-config-form">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">🎓 School/College Start</label>
+            <input type="time" id="routine-school-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🎓 School/College End</label>
+            <input type="time" id="routine-school-end" class="form-input" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">🍲 Lunch Start</label>
+            <input type="time" id="routine-lunch-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🍲 Lunch End</label>
+            <input type="time" id="routine-lunch-end" class="form-input" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">🍎 Snack Break Start</label>
+            <input type="time" id="routine-snack-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🍎 Snack Break End</label>
+            <input type="time" id="routine-snack-end" class="form-input" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">🍱 Dinner Start</label>
+            <input type="time" id="routine-dinner-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🍱 Dinner End</label>
+            <input type="time" id="routine-dinner-end" class="form-input" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">🌙 Sleep Time</label>
+            <input type="time" id="routine-sleep-start" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">☕ Short Break (Mins)</label>
+            <input type="number" id="routine-short-break" class="form-input" min="5" max="30" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🎯 Max Study Limit (Hours)</label>
+            <input type="number" id="routine-max-study" class="form-input" min="1" max="16" step="0.5" placeholder="3" required>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="button" class="btn btn-glass" id="cancel-routine-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i>
+            <span>Save Routine</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating AI Tutor Chatbot Widget -->
+  <div id="ai-chat-widget" class="chat-widget">
+    <button id="chat-launcher-btn" class="chat-launcher-btn" title="Ask StudySync AI Tutor">
+      <i data-lucide="bot" style="width:26px; height:26px;"></i>
+      <span class="chat-pulse-badge">AI Assistant</span>
+    </button>
+
+    <div id="chat-window" class="chat-window glass-card">
+      <div class="chat-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div class="chat-avatar">
+            <img src="favicon.svg" alt="StudySync AI Logo" style="width:22px; height:22px; object-fit:contain;">
+          </div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">StudySync Tutor AI</div>
+            <div style="font-size: 0.75rem; color: #6ee7b7;">● Homework & Doubt Clearing Assistant</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <button id="chat-clear-btn" class="chat-header-btn chat-clear-btn" title="Clear Chat History">
+            <i data-lucide="trash-2" style="width:12px; height:12px;"></i>
+            <span>Clear</span>
+          </button>
+          <button id="chat-key-btn" class="chat-header-btn chat-key-btn" title="Link Gemini API Key">
+            <i data-lucide="key" style="width:12px; height:12px;"></i>
+            <span>Gemini Key</span>
+          </button>
+          <button id="close-chat-btn" class="chat-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.25rem; display: flex; align-items: center;" title="Close Chat">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Chips -->
+      <div class="chat-chips-container">
+        <button class="chat-chip" data-query="How to use Focus Room?">🎧 Focus Room</button>
+        <button class="chat-chip" data-query="How to generate AI Schedule?">📅 AI Schedule</button>
+        <button class="chat-chip" data-query="Explain Calculus Derivatives step by step">📐 Calculus Doubt</button>
+        <button class="chat-chip" data-query="Newton's 2nd Law of Motion">⚡ Physics Doubt</button>
+      </div>
+
+      <!-- Messages Container -->
+      <div id="chat-messages" class="chat-messages">
+        <div class="chat-message bot">
+          <div class="message-bubble">
+            👋 Hi! I'm StudySync Tutor AI. Ask me any homework doubt, conceptual topic, or how to navigate the portal!
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="chat-typing" class="chat-typing" style="display: none;">
+        <span>Tutor is thinking...</span>
+      </div>
+
+      <!-- Input Form -->
+      <form id="chat-input-form" class="chat-input-form">
+        <input type="text" id="chat-input" placeholder="Ask a doubt or homework question..." required autocomplete="off">
+        <button type="submit" class="btn btn-primary btn-sm" id="chat-send-btn">
+          <i data-lucide="send" style="width:16px; height:16px;"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Focus Lock Restriction Overlay Modal -->
+  <div id="focus-guard-modal" class="focus-guard-overlay" style="display: none;">
+    <div class="focus-guard-card glass-card">
+      <div class="focus-guard-icon">
+        <i data-lucide="shield-alert" style="width: 48px; height: 48px; color: #ef4444;"></i>
+      </div>
+      <h2 style="font-size: 1.8rem; margin: 1rem 0 0.5rem 0; color: #f87171;">⚠️ Tab & Window Switching Restricted!</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 480px; margin: 0 auto 1.25rem auto;">
+        Focus Mode is active! To help you maintain 100% study discipline, window and tab switching is locked until the focus timer completes or you pause the session.
+      </p>
+
+      <div class="focus-guard-timer" id="guard-timer-display" style="font-size: 2.75rem; font-weight: 800; color: var(--primary); margin-bottom: 1.5rem; font-family: monospace; letter-spacing: 0.05em;">
+        25:00
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="guard-return-btn" style="padding: 0.75rem 1.5rem;">
+          <i data-lucide="check-circle"></i>
+          <span>Return to Focus Zone</span>
+        </button>
+        <button class="btn btn-glass" id="guard-pause-btn" style="padding: 0.75rem 1.5rem; color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);">
+          <i data-lucide="pause-circle"></i>
+          <span>Pause Focus Session</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extension Setup Guide Modal -->
+  <div id="extension-guide-modal" class="modal-overlay">
+    <div class="modal-content glass-card" style="max-width: 520px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="puzzle" style="color: var(--primary);"></i>
+          <span>StudySync Focus Companion Setup</span>
+        </h3>
+        <button id="close-extension-guide-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+        The <strong>StudySync Focus & Screen Time Companion Extension</strong> provides full study automation:
+      </p>
+      <div style="background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; border: 1px solid var(--glass-border); margin-bottom: 1rem; font-size: 0.82rem; line-height: 1.5; color: #cbd5e1;">
+        <div style="margin-bottom: 0.4rem;">📊 <strong>Automatic Screen Time</strong>: Real-time browsing categorization (Study, Social Media, Entertainment) synced directly to your analytics.</div>
+        <div style="margin-bottom: 0.4rem;">🛑 <strong>Active Distraction Shield</strong>: Automatically blocks Instagram, YouTube, Reddit & custom sites during focus sessions.</div>
+        <div>🔒 <strong>Strict Focus Lock</strong>: Instantly brings your study tab back to front if you switch tabs or windows.</div>
+      </div>
+      <div style="background: rgba(15, 23, 42, 0.7); border-radius: var(--radius-md); padding: 1rem 1.2rem; border: 1px solid var(--glass-border); margin-bottom: 1.25rem; font-size: 0.85rem; line-height: 1.6;">
+        <ol style="padding-left: 1.2rem; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li>Open your browser (Chrome, Edge, or Brave) and go to <code>chrome://extensions</code></li>
+          <li>Turn ON <strong>Developer mode</strong> (toggle switch in the top-right corner).</li>
+          <li>Click the <strong>Load unpacked</strong> button in the top-left.</li>
+          <li>Select the <code>extension</code> folder inside your StudySync project folder.</li>
+          <li>Refresh this page! The status badge will turn green and say <em>Connected & Armed</em>.</li>
+        </ol>
+      </div>
+      <div style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-primary btn-sm" id="close-extension-guide-btn2">Got it!</button>
+      </div>
+    </div>
+  </div>
+  <!-- User Profile & Account Settings Modal -->
+  <div id="user-settings-modal" class="modal-overlay">
+    <div class="modal-content glass-card" style="max-width: 520px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="user-cog" style="color: var(--primary);"></i>
+          <span>Account Settings & Profile</span>
+        </h3>
+        <button id="close-settings-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="user-profile-form">
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+          👤 Personal Credentials
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="settings-name-input" class="form-input" placeholder="Alex Morgan" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="settings-email-input" class="form-input" placeholder="alex@university.edu" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">New Password (leave blank to keep current)</label>
+          <input type="password" id="settings-password-input" class="form-input" placeholder="••••••••">
+        </div>
+
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.25rem 0 0.75rem 0;">
+          🔑 Gemini AI Key (Per-User DB Storage)
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Per-User Gemini API Key</label>
+          <input type="password" id="settings-key-input" class="form-input" placeholder="AIzaSy... (leave blank to keep current)">
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Stored securely in your encrypted database user profile.</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.75rem; border-top: 1px solid var(--glass-border); padding-top: 1.25rem;">
+          <button type="button" id="delete-account-btn" class="btn btn-danger" style="padding: 0.55rem 0.95rem; font-size: 0.85rem;">
+            <i data-lucide="trash-2" style="width:15px; height:15px;"></i>
+            <span>Delete Account</span>
+          </button>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-glass" id="cancel-settings-modal-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <i data-lucide="save"></i>
+              <span>Save Changes</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Collectible Desk Decor Inventory (RPG Mechanic) -->
+  <div class="modal-overlay" id="decor-modal">
+    <div class="modal-content glass-card" style="max-width: 540px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="gift" style="color: var(--accent);"></i>
+          <span>Collectible Desk Decorations</span>
+        </h3>
+        <button id="close-decor-modal-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem; line-height: 1.5;">
+        Complete focus sessions and level up your student rank tags to unlock rare collectibles for your companion! Equipped decorations sit naturally around your study desk.
+      </p>
+
+      <div style="background: rgba(99, 102, 241, 0.1); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: var(--radius-sm); padding: 0.55rem 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: #c7d2fe;">
+          <span>🖐️</span>
+          <span><strong>Custom Arrangement:</strong> Hold & drag any decor item on the desk to move it anywhere!</span>
+        </div>
+        <button type="button" class="btn btn-glass btn-sm" id="reset-decor-positions-btn" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; white-space: nowrap;">
+          <i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i>
+          <span>Reset Layout</span>
+        </button>
+      </div>
+
+      <div class="decor-grid" id="decor-catalog-grid">
+        <!-- Rendered items with unlock levels -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+        <button type="button" class="btn btn-primary btn-sm" id="close-decor-modal-btn2">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast: 20-20-20 Eye-Rest Notification -->
+  <div class="eye-rest-toast" id="eye-rest-toast" style="display: none;">
+    <i data-lucide="eye" style="color: #38bdf8; width: 26px; height: 26px; flex-shrink: 0;"></i>
+    <div style="flex: 1;">
+      <strong style="color: #fff; font-size: 0.85rem; display: block;">20-20-20 Eye Rest Time!</strong>
+      <span style="color: var(--text-muted); font-size: 0.78rem;">Look 20 feet away for 20 seconds to rest your optic nerves.</span>
+    </div>
+    <button type="button" id="close-eye-toast-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+      <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+    </button>
+  </div>
+
+  <script src="js/toast.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/planner.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/screentime.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
