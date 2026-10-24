@@ -840,7 +840,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const vitalityStatusLabel = document.getElementById('vitality-status-label');
   const companionGrowthText = document.getElementById('companion-growth-text');
   const companionGrowthBar = document.getElementById('companion-growth-bar');
-  const equippedDecorContainer = document.getElementById('equipped-decor-container');
   const switchCompanionTypeBtn = document.getElementById('switch-companion-type-btn');
   const companionTypeLabel = document.getElementById('companion-type-label');
   const waterCompanionBtn = document.getElementById('water-companion-btn');

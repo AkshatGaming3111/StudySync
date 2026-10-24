@@ -79,8 +79,8 @@
 
   async function joinRoom(roomId) {
     try {
-      const currentTask = document.getElementById('focus-task-select')?.selectedOptions?.[0]?.text || 'Deep Work Session';
-      const timerMode = document.getElementById('mode-indicator')?.textContent || 'Pomodoro';
+      const currentTask = document.querySelector('.task-card:not(.completed) .task-title')?.textContent || 'Deep Work Session';
+      const timerMode = document.querySelector('.timer-mode-btn.active')?.getAttribute('data-mode') || 'Pomodoro';
 
       const res = await ApiClient.post(`/rooms/${roomId}/join`, {
         currentTask,
@@ -122,7 +122,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const focusTab = document.getElementById('tab-nav-focus');
+    const focusTab = document.querySelector('[data-tab="focus-tab"]');
     if (focusTab) {
       focusTab.addEventListener('click', loadRooms);
     }
