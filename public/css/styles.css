@@ -2286,11 +2286,11 @@ a:hover {
 
 /* Dashboard Tabs & Grid */
 .tab-content {
-  display: none;
+  display: none !important;
   animation: fadeIn 0.3s ease;
 }
 .tab-content.active {
-  display: block;
+  display: block !important;
 }
 
 @keyframes fadeIn {

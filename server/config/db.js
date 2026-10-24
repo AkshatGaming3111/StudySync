@@ -366,15 +366,6 @@ async function seedInitialCommercialData() {
         { title: 'Integration by Parts & Substitution', subject: 'Calculus', duration: 75, priority: 'High', difficulty: 4 }
       ];
 
-      const dsaTasks = [
-        { title: 'Big-O Asymptotics & Time Complexity', subject: 'DSA', duration: 45, priority: 'Medium', difficulty: 2 },
-        { title: 'Arrays & Dynamic Sizing Mechanics', subject: 'DSA', duration: 60, priority: 'High', difficulty: 3 },
-        { title: 'Two Pointers & Sliding Window Patterns', subject: 'DSA', duration: 60, priority: 'High', difficulty: 4 },
-        { title: 'Linked Lists & Reversal Invariance', subject: 'DSA', duration: 60, priority: 'Medium', difficulty: 3 },
-        { title: 'Binary Trees & BFS/DFS Traversal', subject: 'DSA', duration: 75, priority: 'High', difficulty: 4 },
-        { title: 'Dynamic Programming: 1D Memoization', subject: 'DSA', duration: 90, priority: 'High', difficulty: 5 }
-      ];
-
       const mcatBioTasks = [
         { title: 'Amino Acids & Protein Structure', subject: 'Biochemistry', duration: 60, priority: 'High', difficulty: 3 },
         { title: 'Enzyme Kinetics & Michaelis-Menten', subject: 'Biochemistry', duration: 60, priority: 'High', difficulty: 4 },
@@ -397,25 +388,6 @@ async function seedInitialCommercialData() {
           'Prof. Lin & StudySync Curators',
           'Complete 3-week mastery schedule covering limits, multi-step differentiation, and double integration.',
           JSON.stringify(calcTasks),
-          1
-        ]
-      );
-
-      await dbRun(
-        `INSERT INTO marketplace_syllabi 
-          (title, subject, category, difficulty_level, duration_days, downloads_count, likes_count, author_name, description, tasks_json, is_featured) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          'Data Structures & Algorithms: 30-Day LeetCode Sprint',
-          'Computer Science',
-          'Coding & Tech',
-          5,
-          30,
-          950,
-          512,
-          'Silicon Valley Tech Fellows',
-          'Structured daily sprint through core algorithmic patterns: Sliding Window, Trees, and Dynamic Programming.',
-          JSON.stringify(dsaTasks),
           1
         ]
       );
